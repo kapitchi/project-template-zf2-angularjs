@@ -1,4 +1,5 @@
-project-template-zf2-angularjs
-==============================
+http://192.168.60.101/phpmyadmin
 
-Project template for ZF2 and AngularJS application
+
+TODO
+https://github.com/btford/ngmin
