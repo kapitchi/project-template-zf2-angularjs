@@ -1,5 +1,10 @@
 {
+    "repositories": [
+        { "type": "composer", "url": "https://packages.zendframework.com/" }
+    ],
+    "minimum-stability": "dev",
     "require": {
-        "zendframework/zendframework": "2.3.*"
+        "zendframework/zendframework": "2.3.*",
+        "zfcampus/zf-apigility": "~1.0-dev"
     }
 }

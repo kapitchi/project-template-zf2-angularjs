@@ -1,3 +1,8 @@
 /vendor
 /.vagrant
 /composer.lock
+/puphpet/files/dot/ssh/id_rsa.pub
+/puphpet/files/dot/ssh/id_rsa
+/public/vendor/
+/nbproject/
+/node_modules/

@@ -45,8 +45,6 @@ vagrantfile-local:
         host: detect
 server:
     packages:
-        - nodejs
-        - npm
     dot_files:
         -
             bash_aliases: null
@@ -114,7 +112,6 @@ php:
             - mcrypt
             - curl
             - imagick
-            - mbstring
             - memcached
             - mysql
         pear: {  }
