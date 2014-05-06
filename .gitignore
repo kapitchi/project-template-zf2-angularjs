@@ -4,7 +4,9 @@
 /puphpet/files/dot/ssh/id_rsa.pub
 /puphpet/files/dot/ssh/id_rsa
 /public/vendor/
+/public/build/
 /nbproject/
 /node_modules/
 /config/autoload/local.php
 /config/development.config.php
+/.sass-cache
