@@ -1,0 +1,11 @@
+<script src="<?=$this->basePath() . '/' . $this->requireJsUrl?>"></script>
+<?php if ($this->buildConfigUrl):?>
+    <script src="<?=$this->buildConfigUrl?>"></script>
+<?php endif?>
+<script src="<?=$this->basePath(). '/' . $this->configUrl?>"></script>
+<script>
+    requirejs.config({
+        baseUrl: '<?=$this->basePath()?>/'
+    });
+</script>
+<script>require(<?= json_encode($this->loadModules) ?>);</script>

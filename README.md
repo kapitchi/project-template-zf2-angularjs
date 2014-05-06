@@ -3,19 +3,37 @@ ZF2 and AngularJS project template
 
 Scaffolding for a project with a set up below.
 
-Server:
+Server
+------
 
-* ZF2 (Apigility)
+__[ZF2](http://framework.zend.com/)__
 
-Client:
-
-* AngularJS
-* RequireJS
-* SASS
-* Bootstrap 3
+__[Apigility](http://www.apigility.org/)__
 
 
-Vagrant box (Ubuntu 12.04 Precise 64bit):
+Client
+------
+
+__[AngularJS](https://angularjs.org/)__
+
+Whether you need complex one-page app or enrich your server-rendered pages with simple JS widgets - AngularJS made it easy for you!
+
+__[RequireJS](http://requirejs.org/)__
+
+Async JS file/module loader.
+
+__[SASS](http://sass-lang.com/)__
+
+
+__[Bootstrap 3 SASS](http://getbootstrap.com/css/#sass)__
+
+__[FontCustom](http://fontcustom.com/)__
+
+
+Vagrant box
+-----------
+
+__Ubuntu 12.04 Precise 64bit__
 
 Box is based on https://puphpet.com/ with some extra provisioning (/puphpet/files/exec-once).
 
@@ -114,20 +132,16 @@ Grunt tasks
 Apigility Admin
 ---------------
 
-Set devel mode
-```
-php public/index.php development enable
-```
-
 Apigility Admin is devel tool and needs write permission on certain folders/files (e.g. `config/autoload/global.php`, `config/autoload/local.php`, `module` folder, etc).
 Instead of messing up with write permissions on project folders it's better to run it using PHP build-in server using vagrant user.
 
-vagrant ssh into a box and run:
+On vagrant box run a script below.
+This enables development mode, then runs Apigility using PHP build-in server and once stopped (using CTRL+C) switches development mode off again.
 ```
-php -S 0.0.0.0:8080 -t public public/index.php
+./bin/apigility
 ```
 
-UI should now be accessible:  
+UI should now be accessible on:  
 http://192.168.60.101:8080/apigility/ui
 
 
@@ -137,6 +151,12 @@ To consider
 * https://www.npmjs.org/package/grunt-vagrant-ssh
 * https://github.com/btford/ngmin
 
+TODO
+====
+
+* tests - phpunit, karma
+* docs
+* apigility server (grunt) command
 
 Contributing
 ============

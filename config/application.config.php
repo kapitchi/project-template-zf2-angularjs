@@ -7,6 +7,8 @@
 return array(
     'modules' => array(
         'Application',
+        //'KapNg',
+        'KapRequireJs',
         'ZF\\DevelopmentMode',
         'ZF\\Apigility',
         'ZF\\Apigility\\Provider',

@@ -5,8 +5,15 @@
             "dev-master": "1.0-dev"
         }
     },
+    "repositories": [
+        {
+            "url": "https://github.com/kapitchi/KapNg.git",
+            "type": "git"
+        }
+    ],
     "require": {
         "php": ">=5.3.23",
+        "kapitchi/kap-ng": "dev-master",
         "bshaffer/oauth2-server-php": "dev-develop",
         "rwoverdijk/assetmanager": "~1.3",
         "zendframework/zendframework": "~2.3",
