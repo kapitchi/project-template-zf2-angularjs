@@ -1,10 +1,11 @@
 require.config({
     baseUrl: '/',
     paths: {
-        
+        jquery: 'vendor/jquery/dist/jquery',
+        angular: 'vendor/angular/angular'
     },
     shim: {
-	jquery: {
+        jquery: {
             exports: 'jquery'
         },
         angular: {
@@ -36,5 +37,6 @@ require.config({
 
     ],
     config: {
+
     }
 });

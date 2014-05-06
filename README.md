@@ -54,7 +54,7 @@ Copy `config/autoload/local.php.dist` to `config/autoload/local.php`
 This creates Apigility MySql DB adapter
 
 
-PHP Debugging
+PHP Debugging (optional)
 -------------
 
 1. Install xdebug browser extension
@@ -70,19 +70,6 @@ TODO Netbeans
 
 Services
 ========
-
-Application
------------
-
-http://myapp.local
-
-
-Apigility Admin
----------------
-
-http://192.168.60.101:8080/apigility/ui
-
-Make sure Apigility server is running and it's set to development mode (see Development section below).
 
 
 MySQL
@@ -107,13 +94,22 @@ Port: 1025
 Development
 ===========
 
+Vagrant ssh into a box (`cd /vagrant` folder) and run:
 ```
-vagrant ssh
-cd /vagrant
+npm install
 composer install
 bower install
 compass compile
 ```
+
+Run: http://myapp.local
+
+
+Grunt tasks
+-----------
+
+`grunt bower` - adds bower components into RequireJS config file `public\config.js`
+
 
 Apigility Admin
 ---------------
@@ -130,6 +126,9 @@ vagrant ssh into a box and run:
 ```
 php -S 0.0.0.0:8080 -t public public/index.php
 ```
+
+UI should now be accessible:  
+http://192.168.60.101:8080/apigility/ui
 
 
 To consider
