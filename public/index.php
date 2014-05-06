@@ -11,7 +11,17 @@ if (php_sapi_name() === 'cli-server' && is_file(__DIR__ . parse_url($_SERVER['RE
 }
 
 // Setup autoloading
-require 'init_autoloader.php';
+require 'vendor/autoload.php';
+
+if (!defined('APPLICATION_PATH')) {
+    define('APPLICATION_PATH', realpath(__DIR__ . '/../'));
+}
+
+$appConfig = include APPLICATION_PATH . '/config/application.config.php';
+
+if (file_exists(APPLICATION_PATH . '/config/development.config.php')) {
+    $appConfig = Zend\Stdlib\ArrayUtils::merge($appConfig, include APPLICATION_PATH . '/config/development.config.php');
+}
 
 // Run the application!
-Zend\Mvc\Application::init(require 'config/application.config.php')->run();
+Zend\Mvc\Application::init($appConfig)->run();

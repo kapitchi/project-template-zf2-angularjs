@@ -48,6 +48,11 @@ vagrant up
 192.168.60.101 myapp.local
 ```
 
+4. Create local default settings (optional)
+
+Copy `config/autoload/local.php.dist` to `config/autoload/local.php`
+This creates Apigility MySql DB adapter
+
 
 PHP Debugging
 -------------
@@ -72,6 +77,14 @@ Application
 http://myapp.local
 
 
+Apigility Admin
+---------------
+
+http://192.168.60.101:8080/apigility/ui
+
+Make sure Apigility server is running and it's set to development mode (see Development section below).
+
+
 MySQL
 -----
 
@@ -85,7 +98,7 @@ Mailcatcher
 
 http://192.168.60.101:1080/
 
-In order to use mailcatcher you application mailer needs to be set up using this SMTP settings:  
+In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:  
 Host: 127.0.0.1  
 Port: 1025
 
@@ -102,9 +115,35 @@ bower install
 compass compile
 ```
 
+Apigility Admin
+---------------
 
-TODO
-====
+Set devel mode
+```
+php public/index.php development enable
+```
+
+Apigility Admin is devel tool and needs write permission on certain folders/files (e.g. `config/autoload/global.php`, `config/autoload/local.php`, `module` folder, etc).
+Instead of messing up with write permissions on project folders it's better to run it using PHP build-in server using vagrant user.
+
+vagrant ssh into a box and run:
+```
+php -S 0.0.0.0:8080 -t public public/index.php
+```
+
+
+To consider
+===========
 
 * https://www.npmjs.org/package/grunt-vagrant-ssh
 * https://github.com/btford/ngmin
+
+
+Contributing
+============
+
+Contact me on mz@kapitchi.com with any comments/feedback/ideas.
+
+Things to keep an eye on in order to maintain this project template up-to-date:
+
+* Apigility skeleton app - https://github.com/zfcampus/zf-apigility-skeleton

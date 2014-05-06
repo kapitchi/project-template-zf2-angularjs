@@ -6,3 +6,4 @@
 /public/vendor/
 /nbproject/
 /node_modules/
+/config/autoload/local.php

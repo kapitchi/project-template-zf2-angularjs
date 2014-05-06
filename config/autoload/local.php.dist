@@ -1,0 +1,15 @@
+<?php
+return array(
+    'db' => array(
+        'adapters' => array(
+            'mysql-local' => array(
+                'driver' => 'Pdo_Mysql',
+                'database' => 'dbname',
+                'username' => 'dbuser',
+                'password' => '123',
+                'hostname' => 'localhost',
+                'charset' => 'utf8',
+            ),
+        ),
+    ),
+);

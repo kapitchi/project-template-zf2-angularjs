@@ -72,7 +72,7 @@ apache:
         - rewrite
     vhosts:
         to0bNWWejU8s:
-            servername: test.dev
+            servername: myapp.local
             docroot: /vagrant/public
             port: '80'
             setenv:
