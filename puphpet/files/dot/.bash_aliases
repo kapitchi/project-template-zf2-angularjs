@@ -52,7 +52,7 @@ alias grep='grep --color=auto -in'
 alias ..='cd ..'
 
 #kapitchi
-alias phpunit='~/.composer/vendor/bin/phpunit'
+alias phpunit='/vagrant/vendor/bin/phpunit'
 
 cd /vagrant
 #END - kapitchi

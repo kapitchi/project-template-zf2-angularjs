@@ -65,12 +65,13 @@ Installation
 1. Clone project
 
 ```
-git clone https://github.com/kapitchi/project-template-zf2-angularjs.git
+git clone https://github.com/kapitchi/project-template-zf2-angularjs.git myapp
 ```
 
 2. Provision vagrant box
 
 ```
+cd myapp
 vagrant up
 ```
 

@@ -1,4 +1,2 @@
-composer global require "phpunit/phpunit=4.1.*"
-
 mkdir -p /var/www/report
 chown vagrant:vagrant /var/www/report
