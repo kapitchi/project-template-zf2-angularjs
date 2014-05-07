@@ -1,7 +1,7 @@
 ZF2 Apigility and AngularJS project template
 ==================================
 
-All-in-one development vagrant box and project scaffold for ZF2 Apigility API server and AngularJS client-side applications (or
+All-in-one development vagrant box and project scaffold for ZF2 Apigility API server and AngularJS client-side applications.
 
 You do NOT have to install anything locally on your dev machine - vagrant box should provide all tools necessary!
 
@@ -23,6 +23,21 @@ __Client-side related stuff__
 [SASS](http://sass-lang.com/),
 [Bootstrap 3 SASS](http://getbootstrap.com/css/#sass),
 [FontCustom](http://fontcustom.com/)
+
+
+Known issues
+============
+
+__Symptom:__ On provisioning of vagrant box you get an error related to "ez_setup.py"
+
+```
+Error: curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python returned 1 instead of one of [0]
+```
+
+It looks like bitbucket implements download rate limit policy what makes a file sometimes not accessible.  
+Related issue: https://bitbucket.org/pypa/setuptools/issue/192/any-attempt-to-download-ez_setuppy-fails
+
+_Fix:_ Try again later. Wait for package maintainers to update dependency links.
 
 
 Installation
@@ -47,11 +62,12 @@ __Add `myapp.local` to your local hosts file__
 192.168.60.101 myapp.local
 ```
 
-Linux: /etc/hosts
-Windows: C:/Windows/system32/drivers/etc/hosts
+Linux: /etc/hosts  
+Mac: /private/etc/hosts  
+Windows: C:/Windows/System32/drivers/etc/hosts
 
 
-__Build and run!__
+__Build and run__
 
 Connect to a box
 ```
@@ -106,7 +122,7 @@ __Mailcatcher__
 
 http://192.168.60.101:1080/
 
-In order to use mailcatcher your application mailer needsable to download all data. to be set up using this SMTP settings:
+In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:
 Host: 127.0.0.1  
 Port: 1025
 
@@ -114,6 +130,8 @@ Port: 1025
 
 Development
 ===========
+
+_Note:_ Commands below supposed to be run on vagant box (in `/vagrant` folder) and not locally on you development machine.
 
 
 Apigility Admin
@@ -130,6 +148,13 @@ This enables development mode, then runs Apigility using PHP build-in server and
 
 UI should now be accessible on:  
 http://192.168.60.101:8080/apigility/ui
+
+SASS/CSS
+--------
+
+Source folder: `asset/sass`
+Build command: `compass compile`
+Build path: `public/build/css`
 
 
 Unit testing
@@ -208,6 +233,7 @@ TODO
 * Advanced Rest Client example settings
 * docs generation
 * apigility server (grunt) command
+* set PHP to use mailcatcher
 
 
 Contributing
