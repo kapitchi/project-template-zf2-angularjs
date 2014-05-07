@@ -4,4 +4,4 @@ apt-get update
 
 apt-get install -y nodejs
 
-npm install -g grunt-cli bower
+npm install -g grunt-cli bower karma-cli
