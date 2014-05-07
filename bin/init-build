@@ -1,6 +1,9 @@
 #!/bin/bash
 cd /vagrant
 
+echo "Copying default local.php file"
+cp config/autoload/local.php.dist config/autoload/local.php
+
 echo "Running npm ..."
 npm install
 

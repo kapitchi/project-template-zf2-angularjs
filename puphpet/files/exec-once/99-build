@@ -1,5 +1,0 @@
-su vagrant
-cd /vagrant
-
-cp config/autoload/local.php.dist config/autoload/local.php
-./bin/build
