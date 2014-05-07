@@ -55,3 +55,4 @@ alias ..='cd ..'
 alias phpunit='~/.composer/vendor/bin/phpunit'
 
 cd /vagrant
+#END - kapitchi

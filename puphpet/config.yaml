@@ -144,7 +144,7 @@ mysql:
         hfA2izKz9BLr:
             grant:
                 - ALL
-            name: dbname
+            name: myapp
             host: localhost
             user: dbuser
             password: '123'

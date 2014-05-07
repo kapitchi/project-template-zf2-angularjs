@@ -4,7 +4,7 @@ return array(
         'adapters' => array(
             'mysql-local' => array(
                 'driver' => 'Pdo_Mysql',
-                'database' => 'dbname',
+                'database' => 'myapp',
                 'username' => 'dbuser',
                 'password' => '123',
                 'hostname' => 'localhost',
