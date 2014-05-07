@@ -126,13 +126,13 @@ __MySQL clients using TCP/IP over SSH__
 
 For tools like e.g. [MySQL Workbench](http://www.mysql.com/products/workbench/) 
 
-SSH Hostname: 192.168.60.101:22
-SSH Username: vagrant
-SSH Key file: puphpet/files/dot/ssh/id_rsa
-MySQL Hostname: 127.0.0.1
-MySQL Port: 3306
-MySQL user: root
-MySQL pass: 123
+SSH Hostname: 192.168.60.101:22  
+SSH Username: vagrant  
+SSH Key file: puphpet/files/dot/ssh/id_rsa  
+MySQL Hostname: 127.0.0.1  
+MySQL Port: 3306  
+MySQL user: root  
+MySQL pass: 123  
 
 
 __Mailcatcher__
