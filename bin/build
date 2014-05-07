@@ -1,0 +1,18 @@
+#!/bin/bash
+cd /vagrant
+
+echo "Running npm ..."
+npm install
+
+echo "Running composer ..."
+composer install
+
+echo "Running bower ..."
+bower install
+
+echo "Running compass ..."
+compass compile
+
+echo "Running tests PHP/JS ..."
+/vagrant/vendor/bin/phpunit
+karma start

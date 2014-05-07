@@ -1,3 +1,33 @@
-This works!
-
-<?php $this->requireJs('angular-bootstrap')?>
+<?php
+$this->requireJs('module/MyApp');
+?>
+<div ng-controller="demoController" class="container ng-cloak">
+    <h1>Welcome</h1>
+    <p>{{message}}</p>
+    <h2>Contributors</h2>
+    <table class="table table-bordered table-hover">
+        <thead>
+            <tr>
+                <th colspan="4">
+                    <span ng-show="loading">Loading ...</span>
+                    <span ng-show="!loading">Total: {{totalItems}}, Page item count: {{pageSize}}</span>
+                </th>
+            </tr>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Surname</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in items">
+                <td>{{item.id}}</td>
+                <td>{{item.name}}</td>
+                <td>{{item.surname}}</td>
+                <td>{{item.email}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+</div>

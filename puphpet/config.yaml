@@ -148,7 +148,7 @@ mysql:
             host: localhost
             user: dbuser
             password: '123'
-            sql_file: ''
+            sql_file: '/vagrant/develop/example/mysql-example.sql'
 postgresql:
     install: 0
     settings:

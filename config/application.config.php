@@ -7,7 +7,6 @@
 return array(
     'modules' => array(
         'Application',
-        //'KapNg',
         'KapRequireJs',
         'ZF\\DevelopmentMode',
         'ZF\\Apigility',
@@ -23,6 +22,7 @@ return array(
         'ZF\\Rest',
         'ZF\\Rpc',
         'ZF\\Versioning',
+        'Example'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

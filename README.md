@@ -1,4 +1,4 @@
-ZF2 and AngularJS project template
+ZF2 Apigility and AngularJS project template
 ==================================
 
 All-in-one development vagrant box and project scaffold for ZF2 Apigility API server and AngularJS client-side applications (or
@@ -27,11 +27,9 @@ __[RequireJS](http://requirejs.org/)__
 
 Async JS file/module loader.
 
-__[Karma/Jasmine]__
-
+__[Karma/Jasmine](http://karma-runner.github.io/)__
 
 __[SASS](http://sass-lang.com/)__
-
 
 __[Bootstrap 3 SASS](http://getbootstrap.com/css/#sass)__
 
@@ -88,9 +86,11 @@ This creates Apigility MySql DB adapter for pre-installed MySQL `myapp` database
 
 5. Build project
 
-Build your project as discussed in _Development_ section below.
+```
+./bin/build
+```
 
-You should be able to see working demo page on:
+After build runs successfully you should be able to see working demo page on:
 http://myapp.local
 
 
@@ -133,7 +133,7 @@ __Mailcatcher__
 
 http://192.168.60.101:1080/
 
-In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:  
+In order to use mailcatcher your application mailer needsable to download all data. to be set up using this SMTP settings:
 Host: 127.0.0.1  
 Port: 1025
 
@@ -221,7 +221,9 @@ To consider
 TODO
 ====
 
-* docs
+* grunt-tify project
+* Advanced Rest Client example settings
+* docs generation
 * apigility server (grunt) command
 
 Contributing
