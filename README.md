@@ -18,7 +18,9 @@ __Server-side related stuff__
 
 __Client-side related stuff__
 
+[jQuery](http://jquery.com/),
 [AngularJS](https://angularjs.org/),
+[UI Bootstrap](http://angular-ui.github.io/bootstrap/),
 [RequireJS](http://requirejs.org/),
 [Karma/Jasmine](http://karma-runner.github.io/),
 [SASS](http://sass-lang.com/),
@@ -120,12 +122,24 @@ http://192.168.60.101/phpmyadmin
 User: root  
 Pass: 123
 
+__MySQL clients using TCP/IP over SSH__
+
+For tools like e.g. [MySQL Workbench](http://www.mysql.com/products/workbench/) 
+
+SSH Hostname: 192.168.60.101:22
+SSH Username: vagrant
+SSH Key file: puphpet/files/dot/ssh/id_rsa
+MySQL Hostname: 127.0.0.1
+MySQL Port: 3306
+MySQL user: root
+MySQL pass: 123
+
 
 __Mailcatcher__
 
 http://192.168.60.101:1080/
 
-In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:
+In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:  
 Host: 127.0.0.1  
 Port: 1025
 
@@ -157,9 +171,9 @@ http://192.168.60.101:8080/apigility/ui
 SASS/CSS
 --------
 
-Source folder: `asset/sass`
-Build command: `compass compile`
-Build path: `public/build/css`
+Source folder: `asset/sass`  
+Build command: `compass compile`  
+Build path: `public/build/css`  
 
 
 Unit testing
