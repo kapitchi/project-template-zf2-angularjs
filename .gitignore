@@ -6,6 +6,7 @@
 /public/vendor/
 /public/build/
 /nbproject/
+/.idea
 /node_modules/
 /config/autoload/local.php
 /config/development.config.php
