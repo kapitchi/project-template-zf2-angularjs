@@ -2,8 +2,10 @@
 $this->requireJs('module/MyApp');
 ?>
 <div ng-controller="demoController" class="container ng-cloak">
-    <h1>Welcome</h1>
-    <p>{{message}}</p>
+    <h1>Well done!</h1>
+    <p>
+        If you see contributors table below with some records below, all is good and you are good to start doing some real coding now!
+    </p>
     <h2>Contributors</h2>
     <table class="table table-bordered table-hover">
         <thead>
@@ -16,16 +18,16 @@ $this->requireJs('module/MyApp');
             <tr>
                 <th>ID</th>
                 <th>Name</th>
-                <th>Surname</th>
                 <th>Email</th>
+                <th>Note</th>
             </tr>
         </thead>
         <tbody>
             <tr ng-repeat="item in items">
                 <td>{{item.id}}</td>
                 <td>{{item.name}}</td>
-                <td>{{item.surname}}</td>
                 <td>{{item.email}}</td>
+                <td>{{item.note}}</td>
             </tr>
         </tbody>
     </table>
