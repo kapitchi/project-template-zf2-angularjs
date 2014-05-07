@@ -145,11 +145,34 @@ UI should now be accessible on:
 http://192.168.60.101:8080/apigility/ui
 
 
+Unit testing
+------------
+
+__PHP__
+
+```
+phpunit
+```
+
+Code coverage
+http://192.168.60.101/report/test/php/coverage/
+
+__Javascript__
+
+```
+karma start
+```
+
+Code coverage
+http://192.168.60.101/report/test/js/coverage/
+
+
 To consider
 ===========
 
 * https://www.npmjs.org/package/grunt-vagrant-ssh
 * https://github.com/btford/ngmin
+* http://mobileangularui.com/
 
 TODO
 ====

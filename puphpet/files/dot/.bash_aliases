@@ -50,3 +50,8 @@ alias rm='rm -i'
 alias mv='mv -iv'
 alias grep='grep --color=auto -in'
 alias ..='cd ..'
+
+#kapitchi
+alias phpunit='~/.composer/vendor/bin/phpunit'
+
+cd /vagrant

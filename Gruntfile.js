@@ -10,6 +10,11 @@ module.exports = function(grunt) {
                     baseUrl: './public'
                 }
             }
+        },
+        karma: {
+            unit: {
+                configFile: 'test/karma.conf.js'
+            }
         }
     });
 

@@ -15,7 +15,8 @@ require.config({
         modal: 'vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/modal',
         tooltip: 'vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip',
         popover: 'vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover',
-        requirejs: 'vendor/requirejs/require'
+        requirejs: 'vendor/requirejs/require',
+        'angular-bootstrap': 'vendor/angular-bootstrap/ui-bootstrap-tpls'
     },
     shim: {
         jquery: {
@@ -25,6 +26,11 @@ require.config({
             exports: 'angular',
             deps: [
                 'jquery'
+            ]
+        },
+        'angular-bootstrap': {
+            deps: [
+                'angular'
             ]
         },
         affix: {
