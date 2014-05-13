@@ -8,12 +8,14 @@ return array(
     'modules' => array(
         'Application',
         'KapRequireJs',
+        'KapNg',
         'ZF\\DevelopmentMode',
         'ZF\\Apigility',
         'ZF\\Apigility\\Provider',
         'ZF\\Apigility\\Documentation',
         'AssetManager',
         'ZF\\ApiProblem',
+        'ZF\\Configuration',
         'ZF\\MvcAuth',
         'ZF\\OAuth2',
         'ZF\\Hal',
@@ -22,7 +24,8 @@ return array(
         'ZF\\Rest',
         'ZF\\Rpc',
         'ZF\\Versioning',
-        'Example'
+        'Example',
+        21 => 'KapSecurity'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

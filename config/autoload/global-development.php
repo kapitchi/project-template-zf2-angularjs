@@ -7,5 +7,10 @@
 return array(
     'view_manager' => array(
         'display_exceptions' => true,
+    ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(
+            'deny_by_default' => false,
+        )
     )
 );

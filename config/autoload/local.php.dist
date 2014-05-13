@@ -2,7 +2,7 @@
 return array(
     'db' => array(
         'adapters' => array(
-            'mysql-local' => array(
+            'DefaultDbAdapter' => array(
                 'driver' => 'Pdo_Mysql',
                 'database' => 'myapp',
                 'username' => 'dbuser',
@@ -12,4 +12,17 @@ return array(
             ),
         ),
     ),
+    'service_manager' => [
+        'factories' => [
+            'authenticationFacebookAdapter' => function($sm) {
+                //key registration - https://developers.facebook.com/apps
+                $provider =  new \League\OAuth2\Client\Provider\Facebook([
+                    'clientId' => 'XXXX',
+                    'clientSecret' => 'XXXX',
+                    'redirectUri' => 'http://myapp.local/authentication-callback?type=facebook'
+                ]);
+                return $provider;
+            }
+        ]
+    ]
 );

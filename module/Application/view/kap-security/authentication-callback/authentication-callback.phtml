@@ -1,0 +1,21 @@
+<?php
+$res = $this->result;
+$code = $res->getCode();
+
+echo __FILE__ . ' Line: ' . __LINE__; var_dump($res); exit; //XXX
+?>
+<script>
+    require(['angular', 'module/SharedRegistry'], function(angular) {
+        var module = angular.module('callback', ['SharedRegistry']);
+        module.controller('callback', function(sharedRegistry) {
+            var status = sharedRegistry.get('loginController.status');
+            status.state = 'authenticated';
+            sharedRegistry.notify('loginController.status');
+        })
+
+        angular.bootstrap(document, ['callback']);
+    });
+</script>
+<div ng-controller="callback">  
+
+</div>

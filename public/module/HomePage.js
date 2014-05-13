@@ -1,6 +1,6 @@
 define(['angular', 'angular-bootstrap'], function(angular) {
 
-    var module = angular.module('MyApp', ['ui.bootstrap']);
+    var module = angular.module('HomePage', ['ui.bootstrap']);
 
     module.controller('demoController', function($scope, $http, $timeout) {
 
@@ -37,9 +37,6 @@ define(['angular', 'angular-bootstrap'], function(angular) {
         };
 
     });
-
-    //TODO bootstrap MyApp on document
-    angular.bootstrap(document, ['MyApp']);
 
     return module;
 });

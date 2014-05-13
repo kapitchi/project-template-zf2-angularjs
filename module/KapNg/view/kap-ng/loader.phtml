@@ -1,0 +1,13 @@
+<?php
+foreach($this->apps as $target => $modules):
+    $require = array_merge(['angular'], array_map(function($item) {
+        return 'module/' . $item;
+    }, $modules));
+    ?>
+    <script>
+        require(<?=json_encode($require)?>, function(angular) {
+            angular.bootstrap(document.getElementById('<?=$target?>'), <?=json_encode($modules)?>);
+        });
+    </script>
+    <?php
+endforeach;
