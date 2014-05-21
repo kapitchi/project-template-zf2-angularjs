@@ -11,15 +11,4 @@ return array(
             'deny_by_default' => false,
         )
     ),
-    'authentication-adapter-manager' => array(
-        'adapters' => [
-            'factories' => array(
-                'facebook' => function($sm) {
-                        $ser = $sm->getServiceLocator()->get('authenticationFacebookAdapter');
-                        $ins = new KapSecurity\Authentication\Adapter\OAuth2(1, $ser);
-                        return $ins;
-                    }
-            ),
-        ]
-    ),
 );

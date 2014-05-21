@@ -6,6 +6,14 @@
         {
             "url": "https://github.com/kapitchi/KapNg.git",
             "type": "git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/kapitchi/flysystem.git"
+        },
+        {
+            "type": "git",
+            "url": "https://github.com/kapitchi/zf-hal.git"
         }
     ],
     "extra": {
@@ -22,7 +30,8 @@
         "zendframework/zendframework": "~2.3",
         "zfcampus/zf-apigility": "~1.0",
         "zfcampus/zf-apigility-documentation": "~1.0",
-        "zfcampus/zf-development-mode": "~2.0"
+        "zfcampus/zf-development-mode": "~2.0",
+        "league/flysystem": "0.4.*"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
@@ -30,6 +39,11 @@
         "zfcampus/zf-apigility-admin": "~1.0",
         "zfcampus/zf-apigility-welcome": "~1.0",
         "zfcampus/zf-deploy": "~1.0",
-        "phpunit/phpunit": "4.1.*"
+        "phpunit/phpunit": "4.1.*",
+        "aws/aws-sdk-php": "~2.5",
+        "predis/predis": "~0.8.4",
+        "dropbox/dropbox-sdk": "~1.1.1",
+        "rackspace/php-opencloud": "~1.9.1",
+        "phpseclib/phpseclib": "~0.3.5"
     }
 }

@@ -25,7 +25,9 @@ return array(
         'ZF\\Rpc',
         'ZF\\Versioning',
         'Example',
-        21 => 'KapSecurity'
+        'KapApigility',
+        'KapSecurity',
+        'KapFileManager'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

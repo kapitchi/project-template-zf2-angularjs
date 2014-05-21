@@ -10,8 +10,22 @@ define(['angular'], function(angular) {
                 var window = $window;
                 
                 //opened window?
-                if($window.opener) {
-                    window = $window.opener;
+                try {
+                    if($window.opener) {
+                        window = $window.opener;
+                    }
+                    
+                    //test for cross-origin - let's access some property from window
+                    window.document;
+                    
+                } catch (e) {
+                    //browser throws DOMException for cross-origin errors, if it's not re-throw
+                    if(!e instanceof DOMException) {
+                        throw e;
+                    }
+                    
+                    //possible cross-origin - our top window is same one
+                    window = $window;
                 }
                 
                 if(!window.top.kapRegistry) {
@@ -22,6 +36,10 @@ define(['angular'], function(angular) {
             }
             
             function getItem(name) {
+                var item = getStorage()[name];
+                if(item === undefined) {
+                    throw "sharedRegistry.getItem: Can't find item for '" +name + "'";
+                }
                 return getStorage()[name];
             }
             

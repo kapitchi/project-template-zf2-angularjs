@@ -5,6 +5,8 @@
 /puphpet/files/dot/ssh/id_rsa
 /public/vendor/
 /public/build/
+/public/var
+/data
 /nbproject/
 /.idea
 /node_modules/

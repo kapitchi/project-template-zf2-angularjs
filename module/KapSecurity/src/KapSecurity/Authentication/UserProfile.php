@@ -9,8 +9,7 @@ use Zend\Stdlib\ArrayObject;
  * 
  * @package KapSecurity\Authentication
  * 
- * @property mixed $id Unique provider identifier of an user
- * @property strint $username
+ * @property string $username
  * @property string $displayName
  * @property string $firstName
  * @property string $lastName

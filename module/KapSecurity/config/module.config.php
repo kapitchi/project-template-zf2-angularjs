@@ -269,4 +269,67 @@ return array(
     'service_manager' => array(
         'factories' => array(),
     ),
+    'zf-mvc-auth' => array(
+        'authorization' => array(
+            'KapSecurity\\V1\\Rest\\AuthenticationService\\Controller' => array(
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => false,
+                    'POST' => true,
+                    'PATCH' => false,
+                    'PUT' => false,
+                    'DELETE' => false,
+                ),
+            ),
+            'KapSecurity\\V1\\Rest\\IdentityAuthentication\\Controller' => array(
+                'entity' => array(
+                    'GET' => true,
+                    'POST' => false,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => false,
+                    'PUT' => false,
+                    'DELETE' => false,
+                ),
+            ),
+            'KapSecurity\\V1\\Rest\\Identity\\Controller' => array(
+                'entity' => array(
+                    'GET' => false,
+                    'POST' => false,
+                    'PATCH' => true,
+                    'PUT' => true,
+                    'DELETE' => true,
+                ),
+                'collection' => array(
+                    'GET' => true,
+                    'POST' => true,
+                    'PATCH' => false,
+                    'PUT' => false,
+                    'DELETE' => false,
+                ),
+            ),
+            'KapSecurity\\V1\\Rpc\\Authenticate\\Controller' => array(
+                'actions' => array(
+                    'authenticate' => array(
+                        'GET' => false,
+                        'POST' => false,
+                        'PATCH' => false,
+                        'PUT' => false,
+                        'DELETE' => false,
+                    ),
+                ),
+            ),
+        ),
+    ),
 );

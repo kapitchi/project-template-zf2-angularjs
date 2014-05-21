@@ -1,0 +1,14 @@
+<?php
+echo $this->doctype();
+?>
+<html lang="en">
+<head>
+    <?=$this->render('layout/partial/head')?>
+</head>
+<body>
+
+<?=$this->content?>
+
+<?=$this->inlineScript() ?>
+</body>
+</html>

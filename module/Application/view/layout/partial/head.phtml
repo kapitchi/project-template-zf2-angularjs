@@ -1,0 +1,10 @@
+<meta charset="utf-8">
+<?=$this->headTitle('ZF2 Apigility and AngularJS project template')->setSeparator(' - ')->setAutoEscape(false) ?>
+<?=$this->headMeta()
+    ->appendName('viewport', 'width=device-width, initial-scale=1.0')
+    ->appendHttpEquiv('X-UA-Compatible', 'IE=edge')
+    ?>
+<?=$this->headLink()->prependStylesheet($this->basePath() . '/build/css/global.css')?>
+<?=$this->headScript()?>
+<?=$this->requireJs()?>
+<?=$this->ng()?>

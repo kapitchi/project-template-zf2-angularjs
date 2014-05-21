@@ -16,7 +16,9 @@ require.config({
         tooltip: 'vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/tooltip',
         popover: 'vendor/bootstrap-sass-official/vendor/assets/javascripts/bootstrap/popover',
         requirejs: 'vendor/requirejs/require',
-        'angular-bootstrap': 'vendor/angular-bootstrap/ui-bootstrap-tpls'
+        'angular-bootstrap': 'vendor/angular-bootstrap/ui-bootstrap-tpls',
+        'angular-ui-router': 'vendor/angular-ui-router/release/angular-ui-router',
+        'angular-file-upload': 'vendor/angular-file-upload/angular-file-upload'
     },
     shim: {
         jquery: {
@@ -117,6 +119,16 @@ require.config({
             ]
         },
         'angular-route': {
+            deps: [
+                'angular'
+            ]
+        },
+        'angular-ui-router': {
+            deps: [
+                'angular'
+            ]
+        },
+        'angular-file-upload': {
             deps: [
                 'angular'
             ]

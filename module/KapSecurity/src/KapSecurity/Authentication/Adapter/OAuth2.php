@@ -40,8 +40,8 @@ class OAuth2 implements AdapterInterface, CallbackAdapterInterface {
     {
         $code = $this->getMvcEvent()->getRequest()->getQuery('code');
         if(!$code) {
-            return new \Zend\Authentication\Result(
-                \Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID,
+            return new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
                 array(),
                 array("No 'code' available")
             );
@@ -53,7 +53,7 @@ class OAuth2 implements AdapterInterface, CallbackAdapterInterface {
             $userProfile = $service->getUserDetails($token);
             
             $res = new OAuth2Result(
-                \Zend\Authentication\Result::SUCCESS,
+                Result::SUCCESS,
                 $userProfile->uid
             );
             $res->setUserProfile($this->createUserProfile($userProfile));
@@ -65,8 +65,8 @@ class OAuth2 implements AdapterInterface, CallbackAdapterInterface {
             return $res;
             
         } catch(\Exception $e) {
-            return new \Zend\Authentication\Result(
-                \Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID,
+            return new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
                 $code,
                 array($e->getMessage())
             );
@@ -78,7 +78,6 @@ class OAuth2 implements AdapterInterface, CallbackAdapterInterface {
         $orig = $user->getArrayCopy();
         $profile = new UserProfile();
         foreach([
-            'uid' => 'id',
             'nickname' => 'username',
             'name' => 'displayName',
             'firstName' => 'firstName',

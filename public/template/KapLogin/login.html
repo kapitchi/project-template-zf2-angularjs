@@ -1,0 +1,10 @@
+{{status}}
+
+User profile<br>
+{{authenticationService.getUserProfile()}}
+
+<img ng-src="" width="100" height="100">
+
+<div ng-repeat="option in authenticationOptions">
+    <a ng-click="openDialog(option)" class="button">{{option.name}}</a>
+</div>

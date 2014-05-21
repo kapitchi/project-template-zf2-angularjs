@@ -1,8 +1,11 @@
-define(['angular', 'angular-bootstrap'], function(angular) {
+define([
+    'angular',
+    'angular-bootstrap'
+], function(angular) {
 
-    var module = angular.module('HomePage', ['ui.bootstrap']);
+    var module = angular.module('Example', ['ui.bootstrap']);
 
-    module.controller('demoController', function($scope, $http, $timeout) {
+    module.controller('exampleContributorsController', function($scope, $http, $timeout) {
 
         $scope.items = [];
         $scope.totalItems = 0;

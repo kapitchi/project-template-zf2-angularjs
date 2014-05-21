@@ -1,21 +1,24 @@
 <?php
-$res = $this->result;
-$code = $res->getCode();
+/**
+ * @var \KapSecurity\Authentication\Result $result
+ */
+$result = $this->result;
+$res = [
+    'code' => $result->getCode(),
+    'identityId' => $result->getIdentityId(),
+    'messages' => $result->getMessages(),
+    'userProfile' => $result->getUserProfile() ? $result->getUserProfile()->getArrayCopy() : null
+];
 
-echo __FILE__ . ' Line: ' . __LINE__; var_dump($res); exit; //XXX
+
+$this->layout()->setTemplate('layout/dialog');
 ?>
 <script>
-    require(['angular', 'module/SharedRegistry'], function(angular) {
-        var module = angular.module('callback', ['SharedRegistry']);
-        module.controller('callback', function(sharedRegistry) {
-            var status = sharedRegistry.get('loginController.status');
-            status.state = 'authenticated';
-            sharedRegistry.notify('loginController.status');
-        })
-
-        angular.bootstrap(document, ['callback']);
+    require(['angular', 'module/KapLogin'], function(angular, kapLoginModule) {
+        kapLoginModule.constant('loginCallbackResult', <?=json_encode($res)?>);
+        angular.bootstrap(document, ['KapLogin']);
     });
 </script>
-<div ng-controller="callback">  
-
+<div ng-controller="loginCallbackController">
+    {{status}}
 </div>
