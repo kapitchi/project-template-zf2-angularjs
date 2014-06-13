@@ -32,6 +32,11 @@ define([
             file.$uploadFile = true;
         };
 
+        $scope.closeUploadFile = function(file)
+        {
+            file.$uploadFile = false;
+        }
+
         $scope.openCreateFolder = function(file)
         {
             file.$createFolder = true;

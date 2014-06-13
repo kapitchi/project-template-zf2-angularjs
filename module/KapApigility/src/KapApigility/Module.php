@@ -1,7 +1,9 @@
 <?php
 namespace KapApigility;
 
-class Module
+use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
+
+class Module implements ControllerPluginProviderInterface
 {
     public function getConfig()
     {
@@ -17,5 +19,24 @@ class Module
                 ),
             ),
         );
+    }
+
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getControllerPluginConfig()
+    {
+        return [
+            'factories' => [
+                'resource' => function(\Zend\Mvc\Controller\PluginManager $sm) {
+                        $event = new ResourceEvent();
+                        $event->setIdentity($sm->getServiceLocator()->get('api-identity'));
+                        $sm->get('');
+                    }
+            ]
+        ];
     }
 }

@@ -1,9 +1,13 @@
 <?php
 namespace KapFileManager\V1\Rpc\FilesystemSync;
 
+use KapFileManager\FileRepositoryInterface;
 use KapFileManager\FilesystemManager;
 use KapFileManager\V1\Rest\File\FileResource;
 use Zend\Mvc\Controller\AbstractActionController;
+use ZF\Rest\AbstractResourceListener;
+use ZF\Rest\ResourceEvent;
+use ZF\Rest\RestController;
 
 class FilesystemSyncController extends AbstractActionController
 {
@@ -13,27 +17,24 @@ class FilesystemSyncController extends AbstractActionController
     protected $manager;
 
     /**
-     * @var FileResource
+     * @var FileRepositoryInterface
      */
-    protected $resource;
+    protected $fileRepository;
     
-    public function __construct(FilesystemManager $manager, FileResource $resource)
+    public function __construct(FilesystemManager $manager, FileRepositoryInterface $fileRepository)
     {
-        $this->setManager($manager);
-        $this->setResource($resource);
+        $this->manager = $manager;
+        $this->fileRepository = $fileRepository;
     }
     
     public function filesystemSyncAction()
     {
         $filesystemName = $this->params()->fromQuery('filesystem');
         $path = $this->params()->fromQuery('path');
-        
-        //$filesystem = $this->getManager()->get($filesystemName);
-        $resource = $this->getResource();
 
-        return $resource->sync($filesystemName, $path);
+        return $this->fileRepository->sync($this->manager, $filesystemName, $this->getServiceLocator()->get('api-identity'), $path);
     }
-
+    
     /**
      * @param \KapFileManager\FilesystemManager $manager
      */
@@ -50,20 +51,4 @@ class FilesystemSyncController extends AbstractActionController
         return $this->manager;
     }
 
-    /**
-     * @param \KapFileManager\V1\Rest\File\FileResource $resource
-     */
-    public function setResource($resource)
-    {
-        $this->resource = $resource;
-    }
-
-    /**
-     * @return \KapFileManager\V1\Rest\File\FileResource
-     */
-    public function getResource()
-    {
-        return $this->resource;
-    }
-    
 }

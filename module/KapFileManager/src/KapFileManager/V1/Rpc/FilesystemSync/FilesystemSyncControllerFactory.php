@@ -7,7 +7,7 @@ class FilesystemSyncControllerFactory
     {
         return new FilesystemSyncController(
             $controllers->getServiceLocator()->get('KapFileManager\\FilesystemManager'),
-            $controllers->getServiceLocator()->get('KapFileManager\\V1\\Rest\\File\\FileResource')
+            $controllers->getServiceLocator()->get('KapFileManager\\FileRepository')
         );
     }
 }

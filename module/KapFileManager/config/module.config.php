@@ -72,9 +72,7 @@ return array(
         ),
     ),
     'service_manager' => array(
-        'abstract_factories' => array(
-            'KapFileManager\\V1\\Rest\\File\\FileResource' => 'KapFileManager\\V1\\Rest\\File\\FileResourceFactory',
-        ),
+        'factories' => array(),
     ),
     'zf-rest' => array(
         'KapFileManager\\V1\\Rest\\File\\Controller' => array(

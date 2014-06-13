@@ -64,6 +64,7 @@ class Module implements ApigilityProviderInterface
 
         //not explicitly authenticated from apigility with known user session identity
         if($e->getIdentity() instanceof GuestIdentity && $authService->hasIdentity()) {
+            echo __FILE__ . ' Line: ' . __LINE__; var_dump($authService); exit; //XXX
             $identityId = $authService->getIdentity();
             
             //todo this needs finishing - rbac permissions etc from what I understand rbac works like.

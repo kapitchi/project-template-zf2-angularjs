@@ -94,7 +94,7 @@ define(['angular', 'module/SharedRegistry'], function(angular) {
             $scope.status.state = 'IN_PROGRESS';
             $scope.status.message = 'Authenticating ...';
 
-            dialog = $window.open(option.redirectUri, "Login dialog", "width=1024,height=768,dialog=1,location=1,status=1,minimizable=0,close=0,dependent");
+            dialog = $window.open(option._links.redirect_url.href, "Login dialog", "width=1024,height=768,dialog=1,location=1,status=1,minimizable=0,close=0,dependent");
         }
 
         $scope.closeDialog = function() {

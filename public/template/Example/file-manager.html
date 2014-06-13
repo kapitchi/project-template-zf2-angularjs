@@ -31,6 +31,7 @@
             </div>
 
             <div ng-show="file.$uploadFile">
+                <button ng-click="closeUploadFile(file)" class="btn btn-default">Cancel</button>
 
                 <h3>Select files</h3>
 
@@ -125,7 +126,7 @@
                 <tbody>
                 <tr ng-repeat="file in file.$cachedFiles" ng-class="file.type" class="file-type">
                     <td>
-                        <a href ng-click="openFile(file)">{{file.name}}</a>
+                        <a href ng-click="openFile(file)"><i class="glyphicon" ng-class="{'glyphicon-file': file.type == 'FILE', 'glyphicon-folder-close': file.type == 'DIR'}"></i> {{file.name}}</a>
                         <span ng-show="file.filesystem_error">
                             <i class="glyphicon glyphicon-warning-sign"></i> {{file.filesystem_error}}
                         </span>

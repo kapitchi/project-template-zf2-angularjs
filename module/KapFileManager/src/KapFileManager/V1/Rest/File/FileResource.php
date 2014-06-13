@@ -2,22 +2,27 @@
 namespace KapFileManager\V1\Rest\File;
 
 use KapApigility\DbConnectedResource;
+use KapApigility\EntityRepositoryResource;
+use KapFileManager\FileRepositoryInterface;
 use KapFileManager\FilesystemManager;
 use League\Flysystem\Directory;
+use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
+use SebastianBergmann\Exporter\Exception;
 use Zend\Db\TableGateway\TableGatewayInterface as TableGateway;
 use ZF\ApiProblem\ApiProblem;
+use ZF\Rest\AbstractResourceListener;
 
-class FileResource extends DbConnectedResource
+class FileResource extends EntityRepositoryResource
 {
     /**
      * @var FilesystemManager $manager
      */
     protected $manager;
     
-    public function __construct(TableGateway $table, $identifierName, $collectionClass, FilesystemManager $manager)
+    public function __construct(FileRepositoryInterface $repository, FilesystemManager $manager)
     {
-        parent::__construct($table, $identifierName, $collectionClass);
+        parent::__construct($repository);
         
         $this->setManager($manager);
     }
@@ -32,45 +37,46 @@ class FileResource extends DbConnectedResource
     public function create($data)
     {
         try {
-            $filesystemName = 'dropbox';
-            
-            $event = $this->getEvent();
-
-            $values = $this->getInputFilter()->getValues();
-
-            $parent = $this->fetch($values['parent_id']);
-            if(!$parent) {
-                throw \Exception("Can't find item '{$values['parent_id']}'");
+            if(empty($data)) {
+                $data = $this->getInputFilter()->getValues();
             }
-            
-            $filesystemName = $parent['filesystem'];
-            $path = $parent['filesystem_path'] ? $parent['filesystem_path'] . '/' : '';
-            $path .= $values['name'];
             
             $phpFile = null;
             
-            //no event? we can't create uploaded files obviously as there are no sent
-            if($event) {
+            //no event? we can't create uploaded files obviously
+            $event = $this->getEvent();
+            if($event && $event->getRequest()) {
                 $request = $event->getRequest();
 
                 $phpFiles = $request->getFiles()->toArray();
                 if(count($phpFiles) > 1) {
                     //todo fix response code etc.
-                    return new ApiProblem(400, 'More than one files?');
+                    return new ApiProblem(400, 'More than one file?');
                 }
 
                 $phpFile = current($phpFiles);
             }
 
+            $parent = $this->fetch($data->parent_id);
+            if(!$parent) {
+                throw \Exception("Can't find item '{$data->parent_id}'");
+            }
+
+            $filesystemName = $parent['filesystem'];
+            $path = $parent['filesystem_path'] ? $parent['filesystem_path'] . '/' : '';
+            $path .= $data->name;
+
             $manager = $this->getManager();
             if($phpFile) {
+                //file
                 $manager->get($filesystemName)->writeStream($path, fopen($phpFile['tmp_name'], 'r'), array('data'));
             }
             else {
+                //folder
                 $manager->get($filesystemName)->createDir($path);
             }
             
-            return $this->createFileEntityFromPath($filesystemName, $path);
+            return $this->getRepository()->createFileEntityFromPath($this->getManager(), $filesystemName, $path, $this->getIdentity());
 
         } catch(\Exception $e) {
             throw $e;
@@ -108,160 +114,21 @@ class FileResource extends DbConnectedResource
         $filesystemName = $item['filesystem'];
         $path = $item['filesystem_path'];
         $filesystem = $this->getManager()->get($filesystemName);
-        if($item['type'] === 'FILE') {
-            $filesystem->delete($path);
-        }
-        else {
-            $filesystem->deleteDir($path);
+        
+        try {
+            if($item['type'] === 'FILE') {
+                $filesystem->delete($path);
+            }
+            else {
+                $filesystem->deleteDir($path);
+            }
+        } catch (FileNotFoundException $e) {
+            //intentional - we remove file index when file doesn't exists in the storage 
         }
         
         return parent::delete($id);
     }
     
-    public function sync($filesystemName, $syncPath = null)
-    {
-        $ownerId = 1;
-        
-        //root folder sync
-        if(empty($syncPath)) {
-            $this->ensureRootFolder($filesystemName, $ownerId);
-            $syncPath = '';
-        }
-
-        $parentItem = $this->fetchByPath($filesystemName, $syncPath);
-        if(!$parentItem) {
-            throw new \Exception("sync: DB item for path '$syncPath' doesn't exist");
-        }
-
-        $parentId = $parentItem['id'];
-        
-        $filesystem = $this->getManager()->get($filesystemName);
-        $filesystemPaths = $filesystem->listPaths($syncPath);
-
-        $dbFiles = $this->fetchAll([
-            'filesystem' => $filesystemName,
-            'parent_id' => $parentId
-        ])->getCurrentItems()->toArray();
-
-        $toDeleteEntityIds = [];
-        $dbPaths = [];
-        foreach($dbFiles as $dbFile) {
-            $dbPaths[] = $dbFile['filesystem_path'];
-            
-            if($dbFile['filesystem_path'] && !in_array($dbFile['filesystem_path'], $filesystemPaths)) {
-                $toDeleteEntityIds[] = $dbFile['id'];
-            }
-        }
-        
-        $pathsToCreate = [];
-        $dirPaths = [];
-        foreach($filesystemPaths as $path) {
-            if($filesystem->get($path) instanceof Directory) {
-                $dirPaths[] = $path;
-            }
-            
-            if(!in_array($path, $dbPaths)) {
-                $pathsToCreate[] = $path;
-            }
-        }
-
-        $deletedEntities = [];
-        foreach($toDeleteEntityIds as $id) {
-            //$deletedEntities[] = $this->fetch($id);
-            //$this->delete($id);
-            $deletedEntities[] = $this->patch($id, ['filesystem_error' => 'NOT_EXISTS']);
-        }
-        
-        $createdEntities = [];
-        foreach($pathsToCreate as $path) {
-            $createdEntities[] = $this->createFileEntityFromPath($filesystemName, $path);
-        }
-        
-        $ret = [
-            'created' => $createdEntities,
-            'error' => $deletedEntities,
-        ];
-        
-        foreach($dirPaths as $dirPath) {
-            $ret = array_merge($this->sync($filesystemName, $dirPath), $ret);
-        }
-        
-        return $ret;
-    }
-
-    protected function ensureRootFolder($filesystemName, $ownerId)
-    {
-        $rootItem = $this->fetchByPath($filesystemName, '');
-        if($rootItem) {
-            return $rootItem;
-        }
-
-        $data = [
-            'filesystem' => $filesystemName,
-            'filesystem_path' => '',
-            'name' => '',
-            'parent_id' => null,
-            'created_time' => date(DATE_ATOM),
-            'type' => 'ROOT',
-            'owner_id' => 1
-        ];
-
-        return $this->insertAndFetch($data);
-    }
-
-    protected function fetchParentByPath($filesystemName, $path)
-    {
-        $parentPath = dirname($path);
-        if(empty($parentPath) || $parentPath === '.') {
-            $parentPath = '';
-        }
-        
-        return $this->fetchByPath($filesystemName, $parentPath);
-    }
-    
-    protected function fetchByPath($filesystemName, $path)
-    {
-        $entity = $this->fetchAll([
-            'filesystem' => $filesystemName,
-            'filesystem_path' => $path
-        ])->getCurrentItems()->current();
-        
-        return $entity;
-    }
-    
-    protected function createFileEntityFromPath($filesystemName, $path)
-    {
-        $ownerId = 1;
-        
-        $parent = $this->fetchParentByPath($filesystemName, $path);
-        $parentId = $parent ? $parent['id'] : null;
-        
-        $meta = $this->getManager()->get($filesystemName)->getWithMetadata($path, ['mimetype', 'timestamp']);
-
-        $data = [
-            'filesystem' => $filesystemName,
-            'filesystem_path' => $path,
-            'parent_id' => $parentId,
-            'owner_id' => $ownerId,
-            'type' => strtoupper($meta['type']),
-            'name' => $meta['basename'],
-            'mime_type' => $meta['mimetype'],
-            'created_time' => date(DATE_ATOM, $meta['timestamp'])
-        ];
-
-        return $this->insertAndFetch($data);
-    }
-    
-    protected function insertAndFetch(array $data)
-    {
-        //we need to call table directly because parent::create takes inputfilter even data array is set
-        //$entity = parent::create($data);
-
-        $this->table->insert($data);
-        $id = $this->table->getLastInsertValue();
-        return $this->fetch($id);
-    }
-
     /**
      * @param FilesystemManager $manager
      */
@@ -277,4 +144,14 @@ class FileResource extends DbConnectedResource
     {
         return $this->manager;
     }
+
+    /**
+     * @return FileRepositoryInterface
+     */
+    public function getRepository()
+    {
+        return parent::getRepository();
+    }
+
+
 }

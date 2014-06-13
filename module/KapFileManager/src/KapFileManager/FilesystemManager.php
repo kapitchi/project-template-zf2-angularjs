@@ -9,8 +9,10 @@
 namespace KapFileManager;
 
 
+use League\Flysystem\FilesystemInterface;
 use Zend\ServiceManager\AbstractPluginManager;
 use Zend\ServiceManager\Exception;
+use Zend\ServiceManager\ServiceManager;
 
 class FilesystemManager extends AbstractPluginManager {
 
@@ -26,6 +28,8 @@ class FilesystemManager extends AbstractPluginManager {
      */
     public function validatePlugin($plugin)
     {
-        
+        if(!$plugin instanceof FilesystemInterface) {
+            throw new Exception\RuntimeException("Not a filesystem");
+        }
     }
 } 

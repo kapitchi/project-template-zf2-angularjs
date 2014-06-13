@@ -1,12 +1,11 @@
 <?php
 namespace KapFileManager;
 
-use KapFileManager\FilesystemManager;
 use KapFileManager\V1\Rest\File\FileEntity;
 use KapFileManager\V1\Rest\File\FileResource;
+use Zend\Db\TableGateway\TableGateway;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\Config;
 use ZF\Apigility\Provider\ApigilityProviderInterface;
 
 class Module implements ApigilityProviderInterface, ServiceProviderInterface
@@ -80,14 +79,24 @@ class Module implements ApigilityProviderInterface, ServiceProviderInterface
     {
         return [
             'factories' => [
-                'KapFileManager\\FilesystemManager' => function($sm) {
-                        $config = $sm->get('Config');
-                        if(empty($config['file-manager']) || empty($config['file-manager']['filesystems'])) {
-                            throw new \Exception("\$config['file-manager']['filesystems'] config needs to be set");
-                        }
-                        return new FilesystemManager(new Config($config['file-manager']['filesystems']));
+                'KapFileManager\\FilesystemManager' => 'KapFileManager\\FilesystemManagerFactory',
+                'KapFileManager\\FileRepository' => function($sm) {
+                        $ins = new FileDbRepository(
+                            $sm->get('KapFileManager\\V1\\Rest\\File\\FileResource\\Table'),
+                            $sm->get('KapFileManager\\FilesystemManager')
+                        );
+                        return $ins;
+                    },
+                "KapFileManager\\V1\\Rest\\File\\FileResource" => function($sm) {
+                        $ins = new FileResource(
+                            $sm->get('KapFileManager\\FileRepository'),
+                            $sm->get('KapFileManager\\FilesystemManager')
+                        );
+                        
+                        return $ins;
                     }
             ]
         ];
     }
+
 }
