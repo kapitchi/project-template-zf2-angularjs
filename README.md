@@ -32,29 +32,29 @@ __Client-side related stuff__
 Installation
 ============
 
-__Clone project__
+__Get a source code__
+
+Clone it:
 
 ```
 git clone https://github.com/kapitchi/project-template-zf2-angularjs.git myapp
 ```
 
+_OR_
+
+Download it:
+
+https://github.com/kapitchi/project-template-zf2-angularjs/archive/master.zip
+
+
 __Vagrant up!__
+
+_Note:_ Vagrant >=1.6 is required.
 
 ```
 cd myapp
 vagrant up
 ```
-
-__Add `myapp.local` to your local hosts file__
-
-```
-192.168.60.101 myapp.local
-```
-
-Linux: /etc/hosts  
-Mac: /private/etc/hosts  
-Windows: C:/Windows/System32/drivers/etc/hosts
-
 
 __Build and run__
 
@@ -69,7 +69,7 @@ Build a project
 ```
 
 After build runs successfully you should be able to see working app on:
-http://myapp.local
+http://localhost:5788/
 
 See other available services/links in _Bookmarks_ section.
 
@@ -89,22 +89,21 @@ Related issue: https://bitbucket.org/pypa/setuptools/issue/192/any-attempt-to-do
 __Fix:__ Try again later. Wait for package maintainers to update dependency links.
 
 
-__Symptom:__ Phpmyadmin missing table issues
-
-__Fix:__ https://github.com/kapitchi/project-template-zf2-angularjs/issues/3
-
 
 Bookmarks
 =========
 
 __Your project__
 
-http://myapp.local
+http://localhost:5788/
+
+You should be able to access your app from your local network also - just replace 'localhost' with your local IP address.  
+E.g. if your local network IP address is 192.168.1.123 the following should work: http://192.168.1.123:5788/
 
 
 __Apigility__
 
-http://192.168.60.101:8080/apigility/ui
+http://192.168.60.101:5789/apigility/ui
 
 _Note: Available only in development mode. See Development section below._
 
@@ -120,11 +119,11 @@ __JS code coverage__
 
 http://192.168.60.101/report/test/js/coverage/
 
-_Note: You need to run `karma` first_
+_Note: You need to run `karma start` first_
 
 __MySQL__
 
-http://192.168.60.101/phpmyadmin  
+http://192.168.60.101/adminer  
 User: root  
 Pass: 123
 

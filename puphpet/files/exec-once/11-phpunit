@@ -1,2 +1,2 @@
-mkdir -p /var/www/report
-chown vagrant:vagrant /var/www/report
+mkdir -p /var/www/default/report
+chown vagrant:vagrant /var/www/default/report

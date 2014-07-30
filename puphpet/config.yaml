@@ -2,34 +2,52 @@
 vagrantfile-local:
     vm:
         box: ubuntu-precise12042-x64-vbox43
-        box_url: 'http://box.puphpet.com/ubuntu-precise12042-x64-vbox43.box'
+        box_url: puphpet/debian75-x64
         hostname: null
+        memory: '512'
+        cpus: '1'
+        chosen_provider: virtualbox
         network:
             private_network: 192.168.60.101
             forwarded_port:
-                KNX9fsuo68ke:
+                H1z98XipQy7A:
                     host: '5766'
                     guest: '22'
+                YAN9HmkPxaPY:
+                    host: '5780'
+                    guest: '80'
+                YAN9HmkPxaPA:
+                    host: '5788'
+                    guest: '8888'
+                YAN9HmkPxaPB:
+                    host: '5789'
+                    guest: '5789'
         provider:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
-                    memory: '512'
                 setextradata:
                     VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
+            vmware:
+                numvcpus: 1
+            parallels:
+                cpus: 1
         provision:
             puppet:
                 manifests_path: puphpet/puppet
                 manifest_file: manifest.pp
+                module_path: puphpet/puppet/modules
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            cNmNpXJ6ssFT:
+            B5ooTy6K1G2L:
                 source: ./
                 target: /vagrant
-                nfs: 'false'
+                sync_type: default
+                rsync:
+                    auto: 'false'
         usable_port_range: 2200..2250
     ssh:
         host: null
@@ -44,7 +62,7 @@ vagrantfile-local:
     vagrant:
         host: detect
 server:
-    packages:
+    packages: {  }
     dot_files:
         -
             bash_aliases: null
@@ -56,8 +74,10 @@ mailcatcher:
         smtp_port: 1025
         http_ip: 0.0.0.0
         http_port: '1080'
-        mailcatcher_path: /usr/local/bin
-        log_path: /var/log/mailcatcher/mailcatcher.log
+        mailcatcher_path: /usr/local/rvm/wrappers/default
+firewall:
+    install: '1'
+    rules: null
 apache:
     install: '1'
     settings:
@@ -71,14 +91,18 @@ apache:
         - php
         - rewrite
     vhosts:
-        to0bNWWejU8s:
+        hWgPJFMln8LS:
             servername: myapp.local
             docroot: /vagrant/public
-            port: '80'
+            port: '8888'
             setenv:
                 - 'APP_ENV dev'
             override:
                 - All
+            options:
+                - Indexes
+                - FollowSymLinks
+                - MultiViews
             custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
@@ -88,8 +112,12 @@ apache:
     mod_spdy: 0
 nginx:
     install: 0
+    settings:
+        default_vhost: 1
+        proxy_buffer_size: 128k
+        proxy_buffers: '4 256k'
     vhosts:
-        tQS7j103Knd8:
+        PdVoc2MLOqTD:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -101,17 +129,20 @@ nginx:
                 - index.php
             envvars:
                 - 'APP_ENV dev'
+            ssl_cert: ''
+            ssl_key: ''
 php:
     install: '1'
     version: '55'
     composer: '1'
+    composer_home: ''
     modules:
         php:
             - cli
-            - intl
-            - mcrypt
             - curl
             - imagick
+            - intl
+            - mcrypt
             - memcached
             - mysql
         pear: {  }
@@ -122,6 +153,16 @@ php:
         error_reporting: '-1'
         session.save_path: /var/lib/php/session
     timezone: Europe/London
+hhvm:
+    install: 0
+    nightly: 0
+    composer: '1'
+    composer_home: ''
+    settings:
+        host: 127.0.0.1
+        port: '9000'
+    modules:
+        pear: {  }
 xdebug:
     install: '1'
     settings:
@@ -135,20 +176,23 @@ drush:
     install: 0
     settings:
         drush.tag_branch: 6.x
+ruby:
+    versions:
+        XIovQ4LjvXfl:
+            version: ''
 mysql:
     install: '1'
     root_password: '123'
-    phpmyadmin: '1'
-    adminer: 0
+    adminer: 1
     databases:
-        hfA2izKz9BLr:
+        SYFHCjOmLOdQ:
             grant:
                 - ALL
             name: myapp
             host: localhost
             user: dbuser
             password: '123'
-            sql_file: '/vagrant/develop/example/mysql-example.sql'
+            sql_file: /vagrant/develop/example/mysql-example.sql
 postgresql:
     install: 0
     settings:
@@ -161,7 +205,6 @@ postgresql:
 mariadb:
     install: 0
     root_password: '123'
-    phpmyadmin: 0
     adminer: 0
     databases: {  }
     version: '10.0'
