@@ -105,6 +105,12 @@ __Apigility__
 
 _Note: Available only in development mode. See Development section below._
 
+__Fontcustom icons__
+
+[http://localhost:9002/build/icon/icon-preview.html](http://localhost:9002/build/icon/icon-preview.html)
+
+_Note: You might need to run `fontcustom compile` first_
+
 
 __PHP code coverage__
 
@@ -117,7 +123,7 @@ __JS code coverage__
 
 [http://localhost:9001/report/test/js/coverage/](http://localhost:9001/report/test/js/coverage/)  
 
-_Note: You need to run `karma start` first_
+_Note: You might need to run `karma start` first_
 
 __MySQL__
 
@@ -174,6 +180,12 @@ SASS/CSS
 Source folder: `asset/sass`  
 Build command: `compass compile`  
 Build path: `public/build/css`  
+
+Fontcustom icon folder: `asset/icon`  
+Build command: `fontcustom compile`  
+Build path: `public/build/icon`  
+
+Fontcustom scss is not imported by default - go to `asset/sass/global.scss` to include it.
 
 
 Unit testing

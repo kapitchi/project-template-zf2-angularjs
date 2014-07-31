@@ -1,6 +1,7 @@
 /.vagrant
 /composer.lock
 /.sass-cache
+/.fontcustom-manifest.json
 /puphpet/files/dot/ssh
 /nbproject/
 /.idea
