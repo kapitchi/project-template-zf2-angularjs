@@ -42,9 +42,7 @@ git clone https://github.com/kapitchi/project-template-zf2-angularjs.git myapp
 
 _OR_
 
-Download it:
-
-https://github.com/kapitchi/project-template-zf2-angularjs/archive/master.zip
+Download it: https://github.com/kapitchi/project-template-zf2-angularjs/archive/master.zip
 
 
 __Vagrant up!__
@@ -69,7 +67,7 @@ Build a project
 ```
 
 After build runs successfully you should be able to see working app on:
-[http://localhost:9002/]
+[http://localhost:9002/](http://localhost:9002/)
 
 See other available services/links in _Bookmarks_ section.
 
@@ -95,7 +93,7 @@ Bookmarks
 
 __Your project__
 
-[http://localhost:9002/]  
+[http://localhost:9002/](http://localhost:9002/)  
 
 You should be able to access your app from your local network also - just replace 'localhost' with your local IP address.  
 E.g. if your local network IP address is 192.168.1.123 the following should work: http://192.168.1.123:9002/
@@ -103,27 +101,27 @@ E.g. if your local network IP address is 192.168.1.123 the following should work
 
 __Apigility__
 
-[http://localhost:9003/apigility/ui]  
+[http://localhost:9003/apigility/ui](http://localhost:9003/apigility/ui)  
 
 _Note: Available only in development mode. See Development section below._
 
 
 __PHP code coverage__
 
-[http://localhost:9001/report/test/php/coverage/]  
+[http://localhost:9001/report/test/php/coverage/](http://localhost:9001/report/test/php/coverage/)  
 
 _Note: You need to run `phpunit` first_
 
 
 __JS code coverage__
 
-[http://localhost:9001/report/test/js/coverage/]  
+[http://localhost:9001/report/test/js/coverage/](http://localhost:9001/report/test/js/coverage/)  
 
 _Note: You need to run `karma start` first_
 
 __MySQL__
 
-[http://localhost:9001/adminer/]  
+[http://localhost:9001/adminer/](http://localhost:9001/adminer/)  
 User: root  
 Pass: 123
 
@@ -142,7 +140,7 @@ MySQL pass: 123
 
 __Mailcatcher__
 
-[http://192.168.60.101:1080/]  
+[http://192.168.56.101:1080/](http://192.168.56.101:1080/)  
 
 In order to use mailcatcher your application mailer needs to be set up using this SMTP settings:  
 Host: 127.0.0.1  
@@ -168,7 +166,7 @@ This enables development mode, then runs Apigility using PHP build-in server and
 ```
 
 UI should now be accessible on:  
-http://localhost:9003/apigility/ui
+[http://localhost:9003/apigility/ui](http://localhost:9003/apigility/ui)
 
 SASS/CSS
 --------
@@ -190,7 +188,7 @@ phpunit
 ```
 
 Code coverage
-[http://localhost:9001/report/test/php/coverage/]
+[http://localhost:9001/report/test/php/coverage/](http://localhost:9001/report/test/php/coverage/)
 
 __Javascript__
 
@@ -201,7 +199,7 @@ karma start
 ```
 
 Code coverage
-[http://localhost:9001/report/test/js/coverage/]
+[http://localhost:9001/report/test/js/coverage/](http://localhost:9001/report/test/js/coverage/)
 
 
 Grunt tasks
@@ -259,13 +257,6 @@ Contributing
 ============
 
 Please contact me on matus.zeman@gmail.com with any comments/feedback/ideas.
-
-
-__Maintaining__
-
-Things to watch to keep this up-to-date:
-
-* Apigility skeleton app - https://github.com/zfcampus/zf-apigility-skeleton
 
 
 License

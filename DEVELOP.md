@@ -1,10 +1,15 @@
 Development notes
 =================
 
+Things to watch to keep this up-to-date:
+
+* Apigility skeleton app - https://github.com/zfcampus/zf-apigility-skeleton
+
+
 PuPHPet
 -------
 
-Version from: 30/July/2014
+Version from: 31/July/2014
 
 
 https://puphpet.com/
