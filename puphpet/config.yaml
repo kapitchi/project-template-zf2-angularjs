@@ -1,27 +1,27 @@
 ---
 vagrantfile-local:
     vm:
-        box: ubuntu-precise12042-x64-vbox43
-        box_url: puphpet/debian75-x64
+        box: puphpet/ubuntu1404-x64
+        box_url: puphpet/ubuntu1404-x64
         hostname: null
-        memory: '512'
+        memory: '1024'
         cpus: '1'
         chosen_provider: virtualbox
         network:
-            private_network: 192.168.60.101
+            private_network: 192.168.56.101
             forwarded_port:
-                H1z98XipQy7A:
-                    host: '5766'
+                5c0NXa0iPzx8:
+                    host: '9000'
                     guest: '22'
-                YAN9HmkPxaPY:
-                    host: '5780'
+                wsk7GXPhE3Mn:
+                    host: '9001'
                     guest: '80'
-                YAN9HmkPxaPA:
-                    host: '5788'
-                    guest: '8888'
-                YAN9HmkPxaPB:
-                    host: '5789'
-                    guest: '5789'
+                4tNsXqhCokUO:
+                    host: '9002'
+                    guest: '9002'
+                fk83GcKuMDhM:
+                    host: '9003'
+                    guest: '9003'
         provider:
             virtualbox:
                 modifyvm:
@@ -35,18 +35,25 @@ vagrantfile-local:
         provision:
             puppet:
                 manifests_path: puphpet/puppet
-                manifest_file: manifest.pp
+                manifest_file: site.pp
                 module_path: puphpet/puppet/modules
                 options:
                     - '--verbose'
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            B5ooTy6K1G2L:
+            2ulnKYoAKKyL:
                 source: ./
                 target: /vagrant
                 sync_type: default
                 rsync:
+                    args:
+                        - '--verbose'
+                        - '--archive'
+                        - '--delete'
+                        - '-z'
+                    exclude:
+                        - .vagrant/
                     auto: 'false'
         usable_port_range: 2200..2250
     ssh:
@@ -91,10 +98,10 @@ apache:
         - php
         - rewrite
     vhosts:
-        hWgPJFMln8LS:
+        F0LfNSc9LwRa:
             servername: myapp.local
             docroot: /vagrant/public
-            port: '8888'
+            port: '9002'
             setenv:
                 - 'APP_ENV dev'
             override:
@@ -117,7 +124,7 @@ nginx:
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
     vhosts:
-        PdVoc2MLOqTD:
+        EaXd66Vyb2iI:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
@@ -139,12 +146,9 @@ php:
     modules:
         php:
             - cli
-            - curl
-            - imagick
             - intl
             - mcrypt
             - memcached
-            - mysql
         pear: {  }
         pecl:
             - pecl_http
@@ -178,14 +182,14 @@ drush:
         drush.tag_branch: 6.x
 ruby:
     versions:
-        XIovQ4LjvXfl:
+        oHzcvEFdLb6v:
             version: ''
 mysql:
     install: '1'
     root_password: '123'
-    adminer: 1
+    adminer: '1'
     databases:
-        SYFHCjOmLOdQ:
+        SLEd3IUYnHfE:
             grant:
                 - ALL
             name: myapp
@@ -234,4 +238,9 @@ rabbitmq:
     install: 0
     settings:
         port: '5672'
+elastic_search:
+    install: '1'
+    settings:
+        java_install: true
+        autoupgrade: true
 

@@ -95,35 +95,35 @@ Bookmarks
 
 __Your project__
 
-http://localhost:5788/
+http://localhost:9002/
 
 You should be able to access your app from your local network also - just replace 'localhost' with your local IP address.  
-E.g. if your local network IP address is 192.168.1.123 the following should work: http://192.168.1.123:5788/
+E.g. if your local network IP address is 192.168.1.123 the following should work: http://192.168.1.123:9002/
 
 
 __Apigility__
 
-http://192.168.60.101:5789/apigility/ui
+http://localhost:9003/apigility/ui
 
 _Note: Available only in development mode. See Development section below._
 
 
 __PHP code coverage__
 
-http://192.168.60.101/report/test/php/coverage/
+http://localhost:9001/report/test/php/coverage/
 
 _Note: You need to run `phpunit` first_
 
 
 __JS code coverage__
 
-http://192.168.60.101/report/test/js/coverage/
+http://localhost:9001/report/test/js/coverage/
 
 _Note: You need to run `karma start` first_
 
 __MySQL__
 
-http://192.168.60.101/adminer  
+http://localhost:9001/adminer/ 
 User: root  
 Pass: 123
 
@@ -131,7 +131,7 @@ __MySQL clients using TCP/IP over SSH__
 
 For tools like e.g. [MySQL Workbench](http://www.mysql.com/products/workbench/) 
 
-SSH Hostname: 192.168.60.101:22  
+SSH Hostname: localhost:9000  
 SSH Username: vagrant  
 SSH Key file: puphpet/files/dot/ssh/id_rsa  
 MySQL Hostname: 127.0.0.1  
@@ -168,7 +168,7 @@ This enables development mode, then runs Apigility using PHP build-in server and
 ```
 
 UI should now be accessible on:  
-http://192.168.60.101:8080/apigility/ui
+http://localhost:9003/apigility/ui
 
 SASS/CSS
 --------
@@ -190,7 +190,7 @@ phpunit
 ```
 
 Code coverage
-http://192.168.60.101/report/test/php/coverage/
+http://localhost:9001/report/test/php/coverage/
 
 __Javascript__
 
@@ -201,7 +201,7 @@ karma start
 ```
 
 Code coverage
-http://192.168.60.101/report/test/js/coverage/
+http://localhost:9001/report/test/js/coverage/
 
 
 Grunt tasks
