@@ -21,6 +21,11 @@ Line 85: `group: 'www-data', owner: 'vagrant', mount_options: ["dmode=775", "fmo
 Search for '#kapitchi' section
 
 
+`puphpet/files/exec-once`
+
+some extra provisioning
+
+
 Update
 ------
 

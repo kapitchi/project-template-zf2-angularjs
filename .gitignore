@@ -1,8 +1,7 @@
 /.vagrant
 /composer.lock
 /.sass-cache
-/puphpet/files/dot/ssh/id_rsa.pub
-/puphpet/files/dot/ssh/id_rsa
+/puphpet/files/dot/ssh
 /nbproject/
 /.idea
 /config/autoload/local.php
