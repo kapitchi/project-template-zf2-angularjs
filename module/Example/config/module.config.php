@@ -79,7 +79,7 @@ return array(
     'zf-apigility' => array(
         'db-connected' => array(
             'Example\\V1\\Rest\\Example\\ExampleResource' => array(
-                'adapter_name' => 'mysql-local',
+                'adapter_name' => 'DefaultDbAdapter',
                 'table_name' => 'example',
                 'hydrator_name' => 'Zend\\Stdlib\\Hydrator\\ArraySerializable',
                 'controller_service_name' => 'Example\\V1\\Rest\\Example\\Controller',

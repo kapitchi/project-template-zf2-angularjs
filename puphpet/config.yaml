@@ -239,7 +239,7 @@ rabbitmq:
     settings:
         port: '5672'
 elastic_search:
-    install: '1'
+    install: '0'
     settings:
         java_install: true
         autoupgrade: true
