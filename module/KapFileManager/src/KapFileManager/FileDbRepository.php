@@ -44,10 +44,24 @@ class FileDbRepository extends DbEntityRepository implements FileRepositoryInter
             'type' => strtoupper($meta['type']),
             'name' => $meta['basename'],
             'mime_type' => $meta['mimetype'],
-            'created_time' => date(DATE_ATOM, $meta['timestamp'])
+            'create_time' => date(DATE_ATOM, $meta['timestamp'])
         ];
+        
+        if($meta['type'] == 'file') {
+            $data['size'] = $meta['size'];
+        }
 
         return $this->insertAndFetch($data);
+    }
+
+    public function fetchByPath($filesystemName, $path)
+    {
+        $entity = current($this->fetchAll([
+            'filesystem' => $filesystemName,
+            'filesystem_path' => $path
+        ]));
+
+        return $entity;
     }
 
     public function sync(FilesystemManager $manager, $filesystemName, IdentityInterface $identity = null, $syncPath = null)
@@ -141,7 +155,7 @@ class FileDbRepository extends DbEntityRepository implements FileRepositoryInter
             'filesystem_path' => '',
             'name' => '',
             'parent_id' => null,
-            'created_time' => date(DATE_ATOM),
+            'create_time' => date(DATE_ATOM),
             'type' => 'DIR',
             'owner_id' => $identity->getAuthenticationIdentity()
         ];
@@ -149,16 +163,6 @@ class FileDbRepository extends DbEntityRepository implements FileRepositoryInter
         return $this->insertAndFetch($data);
     }
 
-    protected function fetchByPath($filesystemName, $path)
-    {
-        $entity = current($this->fetchAll([
-            'filesystem' => $filesystemName,
-            'filesystem_path' => $path
-        ]));
-
-        return $entity;
-    }
-    
     protected function insertAndFetch(array $data)
     {
         //we need to call table directly because parent::create takes inputfilter even data array is set

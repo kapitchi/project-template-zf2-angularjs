@@ -6,10 +6,6 @@
         {
             "url": "https://github.com/kapitchi/KapNg.git",
             "type": "git"
-        },
-        {
-            "type": "git",
-            "url": "https://github.com/kapitchi/zf-hal.git"
         }
     ],
     "extra": {
@@ -22,6 +18,7 @@
         "php": ">=5.4",
         "zendframework/zendframework": "~2.3",
         "zfcampus/zf-apigility": "~1.0",
+        "zfcampus/zf-hal": "dev-develop as 1.0.1",
         "zfcampus/zf-apigility-documentation": "~1.0",
         "zfcampus/zf-development-mode": "~2.0",
         "kapitchi/kap-ng": "dev-master",

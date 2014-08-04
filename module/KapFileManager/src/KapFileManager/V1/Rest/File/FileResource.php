@@ -10,6 +10,7 @@ use League\Flysystem\FileNotFoundException;
 use League\Flysystem\MountManager;
 use SebastianBergmann\Exporter\Exception;
 use Zend\Db\TableGateway\TableGatewayInterface as TableGateway;
+use Zend\Math\Rand;
 use ZF\ApiProblem\ApiProblem;
 use ZF\Rest\AbstractResourceListener;
 
@@ -37,8 +38,30 @@ class FileResource extends EntityRepositoryResource
     public function create($data)
     {
         try {
+            $repository = $this->getRepository();
+                
             if(empty($data)) {
                 $data = $this->getInputFilter()->getValues();
+            }
+
+            //if parent is not set but filesystem is
+            if(empty($data->parent_id)) {
+                if(empty($data->filesystem)) {
+                    return new ApiProblem(422, "Either parent_id or filesystem must be specified");
+                }
+
+                $root = $repository->fetchByPath($data->filesystem, '');
+                if(!$root) {
+                    return new ApiProblem(422, "Couldn't find a root item for a filesystem specified '$data->filesystem'");
+                }
+                $data->parent_id = $root['id'];
+
+                $items = $repository->getPaginatorAdapter(['filesystem' => $data->filesystem, 'filesystem_path'])->getItems(0, 1);
+            }
+
+            //name not specified -- generate random number
+            if(empty($data->name)) {
+                $data->name = Rand::getString(32);
             }
             
             $phpFile = null;
@@ -56,7 +79,7 @@ class FileResource extends EntityRepositoryResource
 
                 $phpFile = current($phpFiles);
             }
-
+            
             $parent = $this->fetch($data->parent_id);
             if(!$parent) {
                 throw \Exception("Can't find item '{$data->parent_id}'");
@@ -64,16 +87,19 @@ class FileResource extends EntityRepositoryResource
 
             $filesystemName = $parent['filesystem'];
             $path = $parent['filesystem_path'] ? $parent['filesystem_path'] . '/' : '';
+            
             $path .= $data->name;
 
             $manager = $this->getManager();
+            $filesystem = $manager->get($filesystemName);
             if($phpFile) {
                 //file
-                $manager->get($filesystemName)->writeStream($path, fopen($phpFile['tmp_name'], 'r'), array('data'));
+                $filesystem->writeStream($path, fopen($phpFile['tmp_name'], 'r'), array('data'));
             }
             else {
                 //folder
-                $manager->get($filesystemName)->createDir($path);
+                $filesystem->createDir($path);
+                $filesystem->setVisibility($path, 'public');
             }
             
             return $this->getRepository()->createFileEntityFromPath($this->getManager(), $filesystemName, $path, $this->getIdentity());
@@ -104,8 +130,8 @@ class FileResource extends EntityRepositoryResource
 
     public function delete($id)
     {
-        $paginator = $this->fetchAll(['parent_id' => $id]);
-        foreach($paginator->getIterator() as $item) {
+        $items = $this->getRepository()->getPaginatorAdapter(['parent_id' => $id])->getItems(0, 9999);
+        foreach($items as $item) {
             $this->delete($item['id']);
         }
         

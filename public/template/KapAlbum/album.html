@@ -1,0 +1,16 @@
+<h1>KapAlbum Demo</h1>
+{{album}}
+<ul>
+    <li class="media" ng-repeat="item in items">
+            <a class="pull-left" href="#">
+                <img class="media-object" src="">
+            </a>
+            <div class="media-body">
+                <h4 class="media-heading">{{item.title}}</a></h4>
+                <p>{{item.description}}</p>
+            </div>
+            <!-- button ng-click="inlineForm.$show()" ng-hide="inlineForm.$visible" class="btn btn-default">Edit</button -->
+            <button ng-click="editItem(item)" class="btn btn-default">Edit</button>
+            <button ng-click="addItemAfter(item)" class="btn btn-default">Add below</button>
+    </li>
+</ul>

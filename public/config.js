@@ -18,7 +18,9 @@ require.config({
         requirejs: 'vendor/requirejs/require',
         'angular-bootstrap': 'vendor/angular-bootstrap/ui-bootstrap-tpls',
         'angular-ui-router': 'vendor/angular-ui-router/release/angular-ui-router',
-        'angular-file-upload': 'vendor/angular-file-upload/angular-file-upload'
+        'angular-file-upload': 'vendor/angular-file-upload/angular-file-upload',
+        'angular-xeditable': 'vendor/angular-xeditable/dist/js/xeditable',
+        'ng-aloha-editor': 'vendor/ng-aloha-editor/ng-aloha-editor'
     },
     shim: {
         jquery: {
@@ -131,6 +133,16 @@ require.config({
         'angular-file-upload': {
             deps: [
                 'angular'
+            ]
+        },
+        'angular-xeditable': {
+            deps: [
+                'angular'
+            ]
+        },
+        'ng-aloha-editor': {
+            deps: [
+                'aloha-init'
             ]
         }
     },

@@ -307,13 +307,13 @@ return array(
                 'entity' => array(
                     'GET' => false,
                     'POST' => false,
-                    'PATCH' => true,
-                    'PUT' => true,
-                    'DELETE' => true,
+                    'PATCH' => false,
+                    'PUT' => false,
+                    'DELETE' => false,
                 ),
                 'collection' => array(
-                    'GET' => true,
-                    'POST' => true,
+                    'GET' => false,
+                    'POST' => false,
                     'PATCH' => false,
                     'PUT' => false,
                     'DELETE' => false,

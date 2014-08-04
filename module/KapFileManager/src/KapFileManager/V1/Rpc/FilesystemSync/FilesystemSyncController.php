@@ -29,9 +29,12 @@ class FilesystemSyncController extends AbstractActionController
     
     public function filesystemSyncAction()
     {
-        $filesystemName = $this->params()->fromQuery('filesystem');
-        $path = $this->params()->fromQuery('path');
-
+        $inputFilter = $this->getEvent()->getParam('ZF\ContentValidation\InputFilter');
+        $data = $inputFilter->getValues();
+        
+        $filesystemName = $data['filesystem'];
+        $path = $data['path'];
+        
         return $this->fileRepository->sync($this->manager, $filesystemName, $this->getServiceLocator()->get('api-identity'), $path);
     }
     

@@ -31,7 +31,7 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return $this->getRepository()->create($data);
+        return $this->getRepository()->create((array)$data);
     }
 
     /**
@@ -66,8 +66,10 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function fetchAll($params = array())
     {
-        //todo criteria/order by
-        $adapter = $this->getRepository()->getPaginatorAdapter((array)$params);
+        $criteria = $params->get('query', []);
+        $orderBy = $params->get('order_by', []);
+        
+        $adapter = $this->getRepository()->getPaginatorAdapter($criteria, $orderBy);
         return new $this->collectionClass($adapter);
     }
 
@@ -80,7 +82,7 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-        return $this->getRepository()->update($id, $data);
+        return $this->getRepository()->update($id, (array)$data);
     }
 
     /**
@@ -92,6 +94,7 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
+        $data = (array)$data;
         return $this->getRepository()->update($id, $data);
     }
 

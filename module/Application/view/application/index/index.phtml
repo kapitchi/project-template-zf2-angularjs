@@ -12,19 +12,20 @@ $this->ng('ng-app', 'MyApp');
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" ui-sref="home">MyApp v0.1</a>
+                <a class="navbar-brand" ui-sref="app.home">MyApp v0.1</a>
             </div>
             <div class="collapse navbar-collapse">
                 <ul class="nav navbar-nav">
-                    <li ui-sref-active="home"><a ui-sref="home">Home</a></li>
+                    <li ui-sref-active="home"><a ui-sref="app.home">Home</a></li>
                     <li ui-sref-active="example"><a ui-sref="example">Contributors</a></li>
-                    <li ui-sref-active="example"><a ui-sref="example-file-manager">File manager</a></li>
-                    <li ui-sref-active="login"><a ui-sref="login">Login</a></li>
+                    <li ui-sref-active="example-file-manager"><a ui-sref="example-file-manager">File manager</a></li>
+                    <li ui-sref-active="album"><a ui-sref="app.album({albumId: 1})">Album</a></li>
+                    <li ui-sref-active="login"><a ui-sref="app.login">Login</a></li>
                 </ul>
             </div>
         </div>
     </div>
     
-    <div ui-view></div>
+    <div ui-view="container"></div>
     
 </div>

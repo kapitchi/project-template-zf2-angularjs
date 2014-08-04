@@ -1,0 +1,22 @@
+<h1>KapAlbum Demo</h1>
+        
+        
+<div ng-controller="albumController">
+    {{album}}
+    
+    <ul>
+        <li class="media" ng-repeat="item in items">
+                <a class="pull-left" href="#">
+                    <img class="media-object" src="">
+                </a>
+                <div class="media-body">
+                    <h4 class="media-heading" editable-text="item.title" e-form="inlineForm">{{item.title || 'Enter a title ...'}}</h4>
+                    <p editable-textarea="item.description" e-rows="7" e-cols="40" e-form="inlineForm">{{item.description}}</p>
+                </div>
+                <button ng-click="inlineForm.$show()" ng-hide="inlineForm.$visible" class="btn btn-default">Edit</button>
+                <button ng-click="addItemAfter(item)" class="btn btn-default">Add below</button>
+        </li>
+    </ul>
+</div>
+
+

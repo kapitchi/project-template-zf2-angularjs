@@ -1,0 +1,14 @@
+<form role="form">
+    <div class="form-group">
+        <label for="title">Title</label>
+        <input ng-model="item.title" id="title" class="form-control" placeholder="Title">
+    </div>
+    <div class="form-group">
+        <label for="description">Description</label>
+        <input ng-model="item.description" id="description" class="form-control" placeholder="Description">
+    </div>
+</form>
+<div class="modal-footer">
+    <button class="btn btn-default" ng-click="edit(item)">Edit</button>
+    <button class="btn btn-default" ng-click="reload()">Reload</button>
+</div>

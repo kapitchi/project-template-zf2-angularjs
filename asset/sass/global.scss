@@ -5,6 +5,12 @@
 //AngularJS
 @import "angular";
 
+//AngularJS - xeditable
+@import "vendor/angular-xeditable";
+
+//modules
+@import "module/kap-file-manager";
+
 body {
   padding-top: 50px;
 }

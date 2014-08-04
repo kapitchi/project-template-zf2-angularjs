@@ -43,10 +43,16 @@ class Module implements ApigilityProviderInterface, ServiceProviderInterface
         $filesystem = $filesystems->get($entity['filesystem']);
 
         try {
-            $url = $filesystem->getUrl($entity['filesystem_path']);
+            //TODO
+            //$url = $filesystem->getUrl($entity['filesystem_path']);
             $halEntity->getLinks()->add(\ZF\Hal\Link\Link::factory(array(
-                'rel' => 'file',
-                'url' => $url
+                'rel' => 'access',
+                'url' => 'http://myapp.local/file-access?id=' . $entity['id']
+            )));
+
+            $halEntity->getLinks()->add(\ZF\Hal\Link\Link::factory(array(
+                'rel' => 'download',
+                'url' => 'http://myapp.local/file-access?download=1&id=' . $entity['id']
             )));
         } catch(\LogicException $e) {
             //can't find URL plugin for this file

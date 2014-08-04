@@ -27,7 +27,9 @@ return array(
         'Example',
         'KapApigility',
         'KapSecurity',
-        'KapFileManager'
+        'KapFileManager',
+        23 => 'KapGallery',
+        'KapAlbum'
     ),
     'module_listener_options' => array(
         'module_paths' => array(

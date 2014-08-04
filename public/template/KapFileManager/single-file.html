@@ -1,0 +1,14 @@
+<div class="form-control single-file">
+    <div ng-show="!fileId">
+        <div ng-show="uploader.isHTML5">
+            <div class="well my-drop-zone" ng-file-drop ng-file-over="file-over">
+                Base drop zone
+            </div>
+        </div>
+        <input ng-file-select type="file" />
+    </div>
+    <div ng-show="fileId">
+        TODO SHOW {{fileId}} FILE PREVIEW
+        <button ng-click="remove()" class="btn btn-danger">Remove</button>
+    </div>
+</div>

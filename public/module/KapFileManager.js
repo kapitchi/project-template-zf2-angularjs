@@ -102,7 +102,6 @@ define([
         
         function loadFile(file, force)
         {
-            console.log(file); //XXX
             if(file.$loading) {
                 file.$scheduleLoad = true;
                 return;
@@ -258,6 +257,54 @@ define([
             }
         };
     }]);
+    
+    module.directive('singleFile', function() {
+        return {
+            restrict: 'A',
+            templateUrl: '/template/KapFileManager/single-file',
+            replace: true,
+            require: 'ngModel',
+            scope: {
+                uploadData: "=uploadData",
+                fileId: "=ngModel"
+            },
+            link: function(scope, element, attributes, ngModel) {
+                
+            },
+            controller: function($scope, $http, $fileUploader) {
+                $scope.file = null;
+                
+                if($scope.fileId) {
+                    $http.get('/file/' + $scope.fileId).success(function(data) {
+                        $scope.file = data;
+                    });
+                }
+                
+                var uploader = $scope.uploader = $fileUploader.create({
+                    scope: $scope,
+                    url: '/file',
+                    autoUpload: true,
+                    removeAfterUpload: true
+                });
+
+                uploader.bind('afteraddingfile', function (event, item) {
+                    item.formData.push($scope.uploadData);
+                });
+                
+                uploader.bind('success', function(event, xhr, item, response) {
+                    $scope.fileId = response.id;
+                    $scope.file = response;
+                });
+                
+                $scope.remove = function() {
+                    $http.delete('/file/' + $scope.fileId).success(function() {
+                        $scope.fileId = null;
+                        $scope.file = null;
+                    });
+                }
+            }
+        };
+    });
 
     return module;
 });

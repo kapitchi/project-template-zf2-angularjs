@@ -3,6 +3,7 @@ return array(
     'controllers' => array(
         'factories' => array(
             'KapFileManager\\V1\\Rpc\\FilesystemSync\\Controller' => 'KapFileManager\\V1\\Rpc\\FilesystemSync\\FilesystemSyncControllerFactory',
+            'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => 'KapFileManager\\V1\\Rpc\\FileAccess\\FileAccessControllerFactory',
         ),
     ),
     'router' => array(
@@ -26,27 +27,46 @@ return array(
                     ),
                 ),
             ),
+            'kap-file-manager.rpc.file-access' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/file-access',
+                    'defaults' => array(
+                        'controller' => 'KapFileManager\\V1\\Rpc\\FileAccess\\Controller',
+                        'action' => 'fileAccess',
+                    ),
+                ),
+            ),
         ),
     ),
     'zf-versioning' => array(
         'uri' => array(
             0 => 'kap-file-manager.rest.file',
             1 => 'kap-file-manager.rpc.filesystem-sync',
+            2 => 'kap-file-manager.rpc.file-access',
         ),
     ),
     'zf-rpc' => array(
         'KapFileManager\\V1\\Rpc\\FilesystemSync\\Controller' => array(
             'service_name' => 'FilesystemSync',
             'http_methods' => array(
-                0 => 'GET',
+                0 => 'POST',
             ),
             'route_name' => 'kap-file-manager.rpc.filesystem-sync',
+        ),
+        'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => array(
+            'service_name' => 'FileAccess',
+            'http_methods' => array(
+                0 => 'GET',
+            ),
+            'route_name' => 'kap-file-manager.rpc.file-access',
         ),
     ),
     'zf-content-negotiation' => array(
         'controllers' => array(
             'KapFileManager\\V1\\Rest\\File\\Controller' => 'HalJson',
             'KapFileManager\\V1\\Rpc\\FilesystemSync\\Controller' => 'Json',
+            'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => 'Json',
         ),
         'accept_whitelist' => array(
             'KapFileManager\\V1\\Rest\\File\\Controller' => array(
@@ -59,6 +79,11 @@ return array(
                 1 => 'application/json',
                 2 => 'application/*+json',
             ),
+            'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => array(
+                0 => 'application/vnd.kap-file-manager.v1+json',
+                1 => 'application/json',
+                2 => 'application/*+json',
+            ),
         ),
         'content_type_whitelist' => array(
             'KapFileManager\\V1\\Rest\\File\\Controller' => array(
@@ -66,6 +91,10 @@ return array(
                 1 => 'application/json',
             ),
             'KapFileManager\\V1\\Rpc\\FilesystemSync\\Controller' => array(
+                0 => 'application/vnd.kap-file-manager.v1+json',
+                1 => 'application/json',
+            ),
+            'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => array(
                 0 => 'application/vnd.kap-file-manager.v1+json',
                 1 => 'application/json',
             ),
@@ -122,21 +151,42 @@ return array(
         'KapFileManager\\V1\\Rpc\\FilesystemSync\\Controller' => array(
             'input_filter' => 'KapFileManager\\V1\\Rpc\\FilesystemSync\\Validator',
         ),
+        'KapFileManager\\V1\\Rpc\\FileAccess\\Controller' => array(
+            'input_filter' => 'KapFileManager\\V1\\Rpc\\FileAccess\\Validator',
+        ),
     ),
     'input_filter_specs' => array(
         'KapFileManager\\V1\\Rest\\File\\Validator' => array(
             0 => array(
                 'name' => 'name',
-                'required' => true,
+                'required' => false,
                 'filters' => array(),
                 'validators' => array(),
-                'description' => 'file/directory name',
+                'description' => '[optional] file/directory name
+
+If not provided random name is generated.',
+                'allow_empty' => false,
+                'continue_if_empty' => false,
             ),
             1 => array(
                 'name' => 'parent_id',
                 'required' => false,
                 'filters' => array(),
                 'validators' => array(),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
+                'description' => '[optional] Either filesystem or this value has to be specified.',
+            ),
+            2 => array(
+                'name' => 'filesystem',
+                'required' => false,
+                'filters' => array(),
+                'validators' => array(),
+                'allow_empty' => false,
+                'continue_if_empty' => false,
+                'description' => '[optional] Either filesystem or this value has to be specified.
+
+If filesystem is specified file/directory is created under root filesystem folder.',
             ),
         ),
         'KapFileManager\\V1\\Rpc\\FilesystemSync\\Validator' => array(
@@ -153,6 +203,14 @@ return array(
                 'filters' => array(),
                 'validators' => array(),
                 'allow_empty' => true,
+            ),
+        ),
+        'KapFileManager\\V1\\Rpc\\FileAccess\\Validator' => array(
+            0 => array(
+                'name' => 'id',
+                'required' => true,
+                'filters' => array(),
+                'validators' => array(),
             ),
         ),
     ),

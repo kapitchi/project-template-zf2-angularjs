@@ -64,7 +64,6 @@ class Module implements ApigilityProviderInterface
 
         //not explicitly authenticated from apigility with known user session identity
         if($e->getIdentity() instanceof GuestIdentity && $authService->hasIdentity()) {
-            echo __FILE__ . ' Line: ' . __LINE__; var_dump($authService); exit; //XXX
             $identityId = $authService->getIdentity();
             
             //todo this needs finishing - rbac permissions etc from what I understand rbac works like.
@@ -94,6 +93,19 @@ class Module implements ApigilityProviderInterface
                         );
                         return $ins;
                     },
+
+                'KapSecurity\\IdentityRepository' => function($sm) {
+                        $ins = new IdentityRepository(
+                            $sm->get('KapSecurity\V1\Rest\Identity\IdentityResource\Table')
+                        );
+                        return $ins;
+                    },
+                "KapSecurity\\V1\\Rest\\Identity\\IdentityResource" => function($sm) {
+                        $ins = new \KapApigility\EntityRepositoryResource(
+                            $sm->get('KapSecurity\\IdentityRepository')
+                        );
+                        return $ins;
+                    }
             ]
         ];
     }
