@@ -1,0 +1,100 @@
+## Begin PostgreSQL manifest
+
+if $postgresql_values == undef {
+  $postgresql_values = hiera('postgresql', false)
+} if $php_values == undef {
+  $php_values = hiera('php', false)
+} if $hhvm_values == undef {
+  $hhvm_values = hiera('hhvm', false)
+}
+
+if hash_key_equals($postgresql_values, 'install', 1) {
+  if hash_key_equals($apache_values, 'install', 1) or hash_key_equals($nginx_values, 'install', 1) {
+    $postgresql_webserver_restart = true
+  } else {
+    $postgresql_webserver_restart = false
+  }
+
+  if hash_key_equals($php_values, 'install', 1) {
+    $postgresql_php_installed = true
+    $postgresql_php_package   = 'php'
+  } elsif hash_key_equals($hhvm_values, 'install', 1) {
+    $postgresql_php_installed = true
+    $postgresql_php_package   = 'hhvm'
+  } else {
+    $postgresql_php_installed = false
+  }
+
+  if $postgresql_values['settings']['root_password'] {
+    group { $postgresql_values['settings']['user_group']:
+      ensure => present
+    }
+
+    class { 'postgresql::globals':
+      manage_package_repo => true,
+      encoding            => $postgresql_values['settings']['encoding'],
+      version             => $postgresql_values['settings']['version']
+    }->
+    class { 'postgresql::server':
+      postgres_password => $postgresql_values['settings']['root_password'],
+      version           => $postgresql_values['settings']['version'],
+      require           => Group[$postgresql_values['settings']['user_group']]
+    }
+
+    if is_hash($postgresql_values['databases']) and count($postgresql_values['databases']) > 0 {
+      create_resources(postgresql_db, $postgresql_values['databases'])
+    }
+
+    if $postgresql_php_installed and $postgresql_php_package == 'php' and ! defined(Php::Module['pgsql']) {
+      php::module { 'pgsql':
+        service_autorestart => $postgresql_webserver_restart,
+      }
+    }
+  }
+
+  if hash_key_equals($postgresql_values, 'adminer', 1) and $postgresql_php_installed {
+    if hash_key_equals($apache_values, 'install', 1) {
+      $postgresql_adminer_webroot_location = '/var/www/default'
+    } elsif hash_key_equals($nginx_values, 'install', 1) {
+      $postgresql_adminer_webroot_location = $puphpet::params::nginx_webroot_location
+    } else {
+      $postgresql_adminer_webroot_location = '/var/www/default'
+    }
+
+    class { 'puphpet::adminer':
+      location    => "${postgresql_adminer_webroot_location}/adminer",
+      owner       => 'www-data',
+      php_package => $postgresql_php_package
+    }
+  }
+}
+
+define postgresql_db (
+  $user,
+  $password,
+  $grant,
+  $sql_file = false
+) {
+  if $name == '' or $user == '' or $password == '' or $grant == '' {
+    fail( 'PostgreSQL DB requires that name, user, password and grant be set. Please check your settings!' )
+  }
+
+  postgresql::server::db { $name:
+    user     => $user,
+    password => $password,
+    grant    => $grant
+  }
+
+  if $sql_file {
+    $table = "${name}.*"
+
+    exec{ "${name}-import":
+      command     => "sudo -u postgres psql ${name} < ${sql_file}",
+      logoutput   => true,
+      refreshonly => $refresh,
+      require     => Postgresql::Server::Db[$name],
+      onlyif      => "test -f ${sql_file}"
+    }
+  }
+}
+

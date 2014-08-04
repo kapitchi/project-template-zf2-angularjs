@@ -21,7 +21,6 @@
         "zfcampus/zf-hal": "dev-develop as 1.0.1",
         "zfcampus/zf-apigility-documentation": "~1.0",
         "zfcampus/zf-development-mode": "~2.0",
-        "kapitchi/kap-ng": "dev-master",
         "kapitchi/base": "@dev",
         "kapitchi/entity": "@dev",
         "lusitanian/oauth": "~0.3",
@@ -31,7 +30,8 @@
         "predis/predis": "~0.8.4",
         "dropbox/dropbox-sdk": "~1.1.1",
         "rackspace/php-opencloud": "~1.9.1",
-        "phpseclib/phpseclib": "~0.3.5"
+        "phpseclib/phpseclib": "~0.3.5",
+        "kapitchi/kap-ng": "dev-master"
     },
     "require-dev": {
         "zendframework/zftool": "dev-master",
