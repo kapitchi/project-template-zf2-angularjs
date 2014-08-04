@@ -10,9 +10,6 @@ vagrantfile-local:
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                5c0NXa0iPzx8:
-                    host: '9000'
-                    guest: '22'
                 wsk7GXPhE3Mn:
                     host: '9001'
                     guest: '80'
@@ -155,7 +152,7 @@ php:
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: /var/lib/php/session
+        session.save_path: /tmp/phpsession
     timezone: Europe/London
 hhvm:
     install: 0

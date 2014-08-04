@@ -135,7 +135,7 @@ __MySQL clients using TCP/IP over SSH__
 
 For tools like e.g. [MySQL Workbench](http://www.mysql.com/products/workbench/) 
 
-SSH Hostname: localhost:9000  
+SSH Hostname: localhost:2222 
 SSH Username: vagrant  
 SSH Key file: puphpet/files/dot/ssh/id_rsa  
 MySQL Hostname: 127.0.0.1  
