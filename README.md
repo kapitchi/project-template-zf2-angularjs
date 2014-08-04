@@ -101,7 +101,7 @@ E.g. if your local network IP address is 192.168.1.123 the following should work
 
 __Apigility__
 
-[http://localhost:9003/apigility/ui](http://localhost:9003/apigility/ui)  
+[http://192.168.56.101:9003/apigility/ui](http://192.168.56.101:9003/apigility/ui)  
 
 _Note: Available only in development mode. See Development section below._
 
@@ -171,8 +171,8 @@ This enables development mode, then runs Apigility using PHP build-in server and
 ./bin/apigility
 ```
 
-UI should now be accessible on:  
-[http://localhost:9003/apigility/ui](http://localhost:9003/apigility/ui)
+Apigility admin should be now available - see Bookmarks section for URL.
+
 
 SASS/CSS
 --------
