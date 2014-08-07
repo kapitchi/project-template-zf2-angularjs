@@ -31,5 +31,5 @@ $this->requireJs('module/MyApp');
             </tr>
         </tbody>
     </table>
-    <pagination total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
+    <pagination items-per-page="pageSize" total-items="totalItems" ng-model="currentPage" ng-change="pageChanged()"></pagination>
 </div>
