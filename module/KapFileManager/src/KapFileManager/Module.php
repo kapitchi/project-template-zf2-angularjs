@@ -28,6 +28,17 @@ class Module implements ApigilityProviderInterface, ServiceProviderInterface
         $hal = $helpers->get('hal');
 
         $hal->getEventManager()->attach(['renderEntity'], array($this, 'onRenderEntity'));
+        //$hal->getEventManager()->attach(['renderCollection.entity'], array($this, 'onRenderCollectionEntity'));
+    }
+
+    public function onRenderCollectionEntity($e)
+    {
+        $entity = $e->getParam('entity');
+        if(!$entity instanceof FileEntity) {
+            return;
+        }
+        
+        //TODO
     }
 
     public function onRenderEntity($e)
@@ -47,12 +58,12 @@ class Module implements ApigilityProviderInterface, ServiceProviderInterface
             //$url = $filesystem->getUrl($entity['filesystem_path']);
             $halEntity->getLinks()->add(\ZF\Hal\Link\Link::factory(array(
                 'rel' => 'access',
-                'url' => 'http://myapp.local/file-access?id=' . $entity['id']
+                'url' => '/file-access?id=' . $entity['id']
             )));
 
             $halEntity->getLinks()->add(\ZF\Hal\Link\Link::factory(array(
                 'rel' => 'download',
-                'url' => 'http://myapp.local/file-access?download=1&id=' . $entity['id']
+                'url' => '/file-access?download=1&id=' . $entity['id']
             )));
         } catch(\LogicException $e) {
             //can't find URL plugin for this file

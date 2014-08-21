@@ -93,7 +93,7 @@ class DbEntityRepository implements EntityRepositoryInterface
         
         return new DbTableGateway($this->table, $criteria);
     }
-
+    
     /**
      * @param \Zend\Db\TableGateway\TableGateway $table
      */

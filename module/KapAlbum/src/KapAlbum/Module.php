@@ -8,6 +8,34 @@ use ZF\Apigility\Provider\ApigilityProviderInterface;
 
 class Module implements ApigilityProviderInterface
 {
+    public function onBootstrap($e)
+    {
+        $app = $e->getTarget();
+        $this->sm = $app->getServiceManager();
+
+        $events   = $app->getEventManager();
+        $events->attach(MvcEvent::EVENT_RENDER, array($this, 'onRender'), 110);
+    }
+
+    public function onRender($e)
+    {
+        $helpers = $this->sm->get('ViewHelperManager');
+        $hal = $helpers->get('hal');
+
+        $hal->getEventManager()->attach(['renderCollection.entity'], array($this, 'onRenderCollectionEntity'));
+    }
+
+    public function onRenderCollectionEntity($e)
+    {
+        $entity = $e->getParam('entity');
+        if(!$entity instanceof AlbumItemEntity) {
+            return;
+        }
+        
+        $fileRepo = $this->sm->get('KapFileManager\\FileRepository');
+        $entity['file'] = $fileRepo->find($entity['file_id']);
+    }
+    
     public function getServiceConfig()
     {
         return [

@@ -31,7 +31,8 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function create($data)
     {
-        return $this->getRepository()->create((array)$data);
+        $data = $this->sanitizeData((array)$data);
+        return $this->getRepository()->create($data);
     }
 
     /**
@@ -82,7 +83,8 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function patch($id, $data)
     {
-        return $this->getRepository()->update($id, (array)$data);
+        $data = $this->sanitizeData((array)$data);
+        return $this->getRepository()->update($id, $data);
     }
 
     /**
@@ -94,8 +96,29 @@ class EntityRepositoryResource extends AbstractResourceListener
      */
     public function update($id, $data)
     {
-        $data = (array)$data;
+        $data = $this->sanitizeData((array)$data);
         return $this->getRepository()->update($id, $data);
+    }
+
+    /**
+     * Removes all underscored properties e.g. _links _embedded 
+     * 
+     * @param $data
+     * @return array
+     */
+    protected function sanitizeData($data)
+    {
+        $ret = [];
+
+        foreach($data as $key => $value) {
+            if($key[0] === '_') {
+                continue;
+            }
+
+            $ret[$key] = $value;
+        }
+        
+        return $ret;
     }
 
     /**

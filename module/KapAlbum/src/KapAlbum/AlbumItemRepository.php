@@ -56,7 +56,6 @@ class AlbumItemRepository extends DbEntityRepository
 //            unset($criteria['album_id']);
 
             $resultSetPrototype = $table->getResultSetPrototype();
-            echo __FILE__ . ' Line: ' . __LINE__; var_dump($resultSetPrototype); exit; //XXX
             return new DbSelect($select, $sql, $resultSetPrototype);
         }
         

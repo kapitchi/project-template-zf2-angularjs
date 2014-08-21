@@ -24,6 +24,8 @@ return array(
         'ZF\Versioning',
         'KapRequireJs',
         'Example',
+        'KapApigility',
+        'KapNg',
         'KapSecurity',
         'KapFileManager',
         'KapGallery',

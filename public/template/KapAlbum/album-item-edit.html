@@ -15,9 +15,18 @@
             <label class="btn btn-primary" ng-class="{active: item.type === 'EMBED_URL'}">
                 <input ng-model="item.type" type="radio" value="EMBED_URL"> Embed URL
             </label>
+            <label class="btn btn-primary" ng-class="{active: item.type === 'YOUTUBE_VIDEO_ID'}">
+                <input ng-model="item.type" type="radio" value="YOUTUBE_VIDEO_ID"> Youtube
+            </label>
             <label class="btn btn-primary" ng-class="{active: item.type === 'FILE'}">
                 <input ng-model="item.type" type="radio" value="FILE"> File
             </label>
+        </div>
+        <div ng-show="item.type == 'YOUTUBE_VIDEO_ID'">
+            <div class="form-group">
+                <label for="video-id">Youtube Video ID</label>
+                <input ng-model="item.youbube_video_id" id="video-id" class="form-control" placeholder="Youtube Video ID">
+            </div>
         </div>
         <div ng-show="item.type == 'EMBED_URL'">
             <div class="form-group">
@@ -34,6 +43,6 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-click="save()">Save</button>
+    <button class="btn btn-primary" ng-click="save(item)">Save</button>
     <button class="btn btn-warning" ng-click="cancel()">Cancel</button>
 </div>

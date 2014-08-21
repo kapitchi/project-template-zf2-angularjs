@@ -47,7 +47,7 @@ class FileDbRepository extends DbEntityRepository implements FileRepositoryInter
             'create_time' => date(DATE_ATOM, $meta['timestamp'])
         ];
         
-        if($meta['type'] == 'file') {
+        if($meta['type'] == 'FILE') {
             $data['size'] = $meta['size'];
         }
 
