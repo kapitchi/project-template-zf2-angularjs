@@ -22,7 +22,9 @@ return array(
         'ZF\Rest',
         'ZF\Rpc',
         'ZF\Versioning',
+        'KapApigility',
         'KapRequireJs',
+        'KapNg',
         'Example'
     ),
     'module_listener_options' => array(

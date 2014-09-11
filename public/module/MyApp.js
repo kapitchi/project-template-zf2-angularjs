@@ -38,8 +38,5 @@ define(['angular', 'angular-bootstrap'], function(angular) {
 
     });
 
-    //TODO bootstrap MyApp on document
-    angular.bootstrap(document, ['MyApp']);
-
     return module;
 });

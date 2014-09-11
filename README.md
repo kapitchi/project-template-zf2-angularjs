@@ -72,22 +72,6 @@ After build runs successfully you should be able to see working app on:
 See other available services/links in _Bookmarks_ section.
 
 
-Known issues
-------------
-
-__Symptom:__ On provisioning of vagrant box you get an error related to "ez_setup.py"
-
-```
-Error: curl https://bitbucket.org/pypa/setuptools/raw/bootstrap/ez_setup.py | python returned 1 instead of one of [0]
-```
-
-It looks like bitbucket implements download rate limit policy what makes a file sometimes not accessible.  
-Related issue: https://bitbucket.org/pypa/setuptools/issue/192/any-attempt-to-download-ez_setuppy-fails
-
-__Fix:__ Try again later. Wait for package maintainers to update dependency links.
-
-
-
 Bookmarks
 =========
 
