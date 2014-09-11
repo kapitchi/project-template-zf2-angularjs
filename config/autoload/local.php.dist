@@ -12,4 +12,13 @@ return array(
             ),
         ),
     ),
+    'zf-oauth2' => array(
+        'storage' => 'ZF\\OAuth2\\Adapter\\PdoAdapter',
+        'db' => array(
+            'dsn_type' => 'PDO',
+            'dsn' => 'mysql:dbname=myapp;host=localhost',
+            'username' => 'dbuser',
+            'password' => '123',
+        ),
+    ),
 );
