@@ -152,7 +152,7 @@ php:
     ini:
         display_errors: On
         error_reporting: '-1'
-        session.save_path: /tmp/phpsession
+        session.save_path: /phpsession
     timezone: Europe/London
 hhvm:
     install: 0
