@@ -1,8 +1,7 @@
-## Begin MailCatcher manifest
+if $mailcatcher_values == undef { $mailcatcher_values = hiera_hash('mailcatcher', false) }
 
-if $mailcatcher_values == undef {
-  $mailcatcher_values = hiera('mailcatcher', false)
-}
+include puphpet::params
+include puphpet::supervisord
 
 if hash_key_equals($mailcatcher_values, 'install', 1) {
   if ! defined(Package['tilt']) {
@@ -19,35 +18,25 @@ if hash_key_equals($mailcatcher_values, 'install', 1) {
     }
   }
 
-  create_resources('class', { 'mailcatcher' => $mailcatcher_values['settings'] })
+  $mailcatcher_settings = delete($mailcatcher_values['settings'], 'from_email_method')
 
-  if ! defined(Firewall["100 tcp/${mailcatcher_values['settings']['smtp_port']}, ${mailcatcher_values['settings']['http_port']}"]) {
-    firewall { "100 tcp/${mailcatcher_values['settings']['smtp_port']}, ${mailcatcher_values['settings']['http_port']}":
-      port   => [$mailcatcher_values['settings']['smtp_port'], $mailcatcher_values['settings']['http_port']],
+  create_resources('class', { 'mailcatcher' => $mailcatcher_settings })
+
+  if ! defined(Firewall["100 tcp/${mailcatcher_settings['smtp_port']}, ${mailcatcher_settings['http_port']}"]) {
+    firewall { "100 tcp/${mailcatcher_settings['smtp_port']}, ${mailcatcher_settings['http_port']}":
+      port   => [$mailcatcher_settings['smtp_port'], $mailcatcher_settings['http_port']],
       proto  => tcp,
       action => 'accept',
     }
   }
 
-  if ! defined(Class['supervisord']) {
-    class{ 'puphpet::python::pip': }
-
-    class { 'supervisord':
-      install_pip => false,
-      require     => [
-        Class['my_fw::post'],
-        Class['Puphpet::Python::Pip'],
-      ],
-    }
-  }
-
-  $mailcatcher_path = $mailcatcher_values['settings']['mailcatcher_path']
+  $mailcatcher_path = $mailcatcher_settings['mailcatcher_path']
 
   $mailcatcher_options = sort(join_keys_to_values({
-    ' --smtp-ip'   => $mailcatcher_values['settings']['smtp_ip'],
-    ' --smtp-port' => $mailcatcher_values['settings']['smtp_port'],
-    ' --http-ip'   => $mailcatcher_values['settings']['http_ip'],
-    ' --http-port' => $mailcatcher_values['settings']['http_port']
+    ' --smtp-ip'   => $mailcatcher_settings['smtp_ip'],
+    ' --smtp-port' => $mailcatcher_settings['smtp_port'],
+    ' --http-ip'   => $mailcatcher_settings['http_ip'],
+    ' --http-port' => $mailcatcher_settings['http_port']
   }, ' '))
 
   supervisord::program { 'mailcatcher':

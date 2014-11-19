@@ -1,8 +1,6 @@
-## Begin Ruby manifest
+if $ruby_values == undef { $ruby_values = hiera_hash('ruby', false) }
 
-if $ruby_values == undef {
-  $ruby_values = hiera('ruby', false)
-}
+include puphpet::params
 
 if hash_key_true($ruby_values, 'versions') and count($ruby_values['versions']) > 0 {
   $rvm_has_default = false
@@ -34,10 +32,18 @@ define install_ruby (
 
     if count($gems_merged) > 0 {
       each( $gems_merged ) |$key, $gem| {
-        rvm_gem { $gem:
-          name         => $gem,
+        $gem_array = split($gem, '@')
+
+        if count($gem_array) == 2 {
+          $gem_ensure = $gem_array[1]
+        } else {
+          $gem_ensure = present
+        }
+
+        rvm_gem { $gem_array[0]:
+          name         => $gem_array[0],
           ruby_version => $version,
-          ensure       => present,
+          ensure       => $gem_ensure,
           require      => Rvm_system_ruby[$version]
         }
       }
@@ -45,4 +51,5 @@ define install_ruby (
   }
 
 }
+
 

@@ -3,28 +3,27 @@ vagrantfile-local:
     vm:
         box: puphpet/ubuntu1404-x64
         box_url: puphpet/ubuntu1404-x64
-        hostname: null
+        hostname: ''
         memory: '1024'
         cpus: '1'
         chosen_provider: virtualbox
         network:
             private_network: 192.168.56.101
             forwarded_port:
-                wsk7GXPhE3Mn:
+                XCigJhbLW9tD:
                     host: '9001'
                     guest: '80'
-                4tNsXqhCokUO:
+                DKv9Tatac8Yg:
                     host: '9002'
                     guest: '9002'
-                fk83GcKuMDhM:
+                0oFOCoVUNsox:
                     host: '9003'
                     guest: '9003'
+        post_up_message: ''
         provider:
             virtualbox:
                 modifyvm:
                     natdnshostresolver1: on
-                setextradata:
-                    VBoxInternal2/SharedFoldersEnableSymlinksCreate/v-root: 1
             vmware:
                 numvcpus: 1
             parallels:
@@ -39,7 +38,7 @@ vagrantfile-local:
                     - '--hiera_config /vagrant/puphpet/puppet/hiera.yaml'
                     - '--parser future'
         synced_folder:
-            2ulnKYoAKKyL:
+            Ncpi01u9Cgk6:
                 source: ./
                 target: /vagrant
                 sync_type: default
@@ -52,7 +51,9 @@ vagrantfile-local:
                     exclude:
                         - .vagrant/
                     auto: 'false'
-        usable_port_range: 2200..2250
+        usable_port_range:
+            start: 10200
+            stop: 10500
     ssh:
         host: null
         port: null
@@ -66,19 +67,8 @@ vagrantfile-local:
     vagrant:
         host: detect
 server:
-    packages: {  }
-    dot_files:
-        -
-            bash_aliases: null
-    _prevent_empty: ''
-mailcatcher:
     install: '1'
-    settings:
-        smtp_ip: 0.0.0.0
-        smtp_port: 1025
-        http_ip: 0.0.0.0
-        http_port: '1080'
-        mailcatcher_path: /usr/local/rvm/wrappers/default
+    packages: {  }
 firewall:
     install: '1'
     rules: null
@@ -92,10 +82,9 @@ apache:
         manage_group: false
         sendfile: 0
     modules:
-        - php
         - rewrite
     vhosts:
-        F0LfNSc9LwRa:
+        9x1SqXmuhCGM:
             servername: myapp.local
             docroot: /vagrant/public
             port: '9002'
@@ -107,32 +96,34 @@ apache:
                 - Indexes
                 - FollowSymLinks
                 - MultiViews
+            engine: ''
             custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
             ssl_chain: ''
             ssl_certs_dir: ''
     mod_pagespeed: 0
-    mod_spdy: 0
 nginx:
-    install: 0
+    install: '0'
     settings:
         default_vhost: 1
         proxy_buffer_size: 128k
         proxy_buffers: '4 256k'
     vhosts:
-        EaXd66Vyb2iI:
+        7S2fApjgN1FG:
             server_name: awesome.dev
             server_aliases:
                 - www.awesome.dev
             www_root: /var/www/awesome.dev
             listen_port: '80'
+            location: .php$
             index_files:
                 - index.html
                 - index.htm
                 - index.php
             envvars:
                 - 'APP_ENV dev'
+            engine: ''
             ssl_cert: ''
             ssl_key: ''
 php:
@@ -154,16 +145,17 @@ php:
         error_reporting: '-1'
         session.save_path: /phpsession
     timezone: Europe/London
+    mod_php: 0
 hhvm:
-    install: 0
+    install: '0'
     nightly: 0
     composer: '1'
     composer_home: ''
     settings:
         host: 127.0.0.1
         port: '9000'
-    modules:
-        pear: {  }
+    ini: {  }
+    timezone: null
 xdebug:
     install: '1'
     settings:
@@ -173,20 +165,30 @@ xdebug:
         xdebug.remote_enable: '1'
         xdebug.remote_handler: dbgp
         xdebug.remote_port: '9000'
+xhprof:
+    install: '0'
 drush:
-    install: 0
-    settings:
-        drush.tag_branch: 6.x
+    install: '0'
+    version: ''
 ruby:
+    install: '1'
     versions:
-        oHzcvEFdLb6v:
+        w6YfT3WsX98T:
             version: ''
+nodejs:
+    install: '0'
+    npm_packages: {  }
+python:
+    install: '1'
+    packages: {  }
+    versions: {  }
 mysql:
     install: '1'
+    override_options: {  }
     root_password: '123'
     adminer: '1'
     databases:
-        SLEd3IUYnHfE:
+        p02Z1PL6kepx:
             grant:
                 - ALL
             name: myapp
@@ -195,7 +197,7 @@ mysql:
             password: '123'
             sql_file: /vagrant/develop/example/mysql-example.sql
 postgresql:
-    install: 0
+    install: '0'
     settings:
         root_password: '123'
         user_group: postgres
@@ -204,23 +206,37 @@ postgresql:
     databases: {  }
     adminer: 0
 mariadb:
-    install: 0
+    install: '0'
+    override_options: {  }
     root_password: '123'
     adminer: 0
     databases: {  }
     version: '10.0'
+sqlite:
+    install: '0'
+    adminer: 0
+    databases: {  }
 mongodb:
-    install: 0
+    install: '0'
     settings:
         auth: 1
         port: '27017'
     databases: {  }
 redis:
-    install: 0
+    install: '0'
     settings:
         conf_port: '6379'
+mailcatcher:
+    install: '1'
+    settings:
+        smtp_ip: 0.0.0.0
+        smtp_port: 1025
+        http_ip: 0.0.0.0
+        http_port: '1080'
+        mailcatcher_path: /usr/local/rvm/wrappers/default
+        from_email_method: inline
 beanstalkd:
-    install: 0
+    install: '0'
     settings:
         listenaddress: 0.0.0.0
         listenport: '13000'
@@ -232,7 +248,7 @@ beanstalkd:
     beanstalk_console: 0
     binlogdir: /var/lib/beanstalkd/binlog
 rabbitmq:
-    install: 0
+    install: '0'
     settings:
         port: '5672'
 elastic_search:

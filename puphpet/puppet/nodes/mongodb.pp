@@ -1,14 +1,9 @@
-## Begin MongoDb manifest
+if $mongodb_values == undef { $mongodb_values = hiera_hash('mongodb', false) }
+if $php_values == undef { $php_values = hiera_hash('php', false) }
+if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
+if $nginx_values == undef { $nginx_values = hiera_hash('nginx', false) }
 
-if $mongodb_values == undef {
-  $mongodb_values = hiera('mongodb', false)
-} if $php_values == undef {
-  $php_values = hiera('php', false)
-} if $apache_values == undef {
-  $apache_values = hiera('apache', false)
-} if $nginx_values == undef {
-  $nginx_values = hiera('nginx', false)
-}
+include puphpet::params
 
 if hash_key_equals($apache_values, 'install', 1)
   or hash_key_equals($nginx_values, 'install', 1)
@@ -22,10 +17,11 @@ if hash_key_equals($mongodb_values, 'install', 1) {
   file { ['/data', '/data/db']:
     ensure  => directory,
     mode    => 0775,
-    before  => Class['Mongodb::Globals'],
+    before  => Class['mongodb::globals'],
   }
 
-  Class['Mongodb::Globals'] -> Class['Mongodb::Server']
+  Class['mongodb::globals']
+  -> Class['mongodb::server']
 
   class { 'mongodb::globals':
     manage_package_repo => true,
@@ -34,16 +30,26 @@ if hash_key_equals($mongodb_values, 'install', 1) {
   create_resources('class', { 'mongodb::server' => $mongodb_values['settings'] })
 
   if $::osfamily == 'redhat' {
-    class { '::mongodb::client':
-      require => Class['::Mongodb::Server']
+    class { 'mongodb::client':
+      require => Class['mongodb::server']
     }
   }
 
-  if is_hash($mongodb_values['databases']) and count($mongodb_values['databases']) > 0 {
-    create_resources(mongodb_db, $mongodb_values['databases'])
+  if count($mongodb_values['databases']) > 0 {
+    each( $mongodb_values['databases'] ) |$key, $database| {
+      $database_merged = delete(merge($database, {
+        'dbname' => $database['name'],
+      }), 'name')
+
+      create_resources( mongodb_db, {
+        "${database['user']}@${database['name']}" => $database_merged
+      })
+    }
   }
 
-  if hash_key_equals($php_values, 'install', 1) and ! defined(Puphpet::Php::Pecl['mongo']) {
+  if hash_key_equals($php_values, 'install', 1)
+    and ! defined(Puphpet::Php::Pecl['mongo'])
+  {
     puphpet::php::pecl { 'mongo':
       service_autorestart => $mongodb_webserver_restart,
       require             => Class['mongodb::server']
@@ -52,16 +58,34 @@ if hash_key_equals($mongodb_values, 'install', 1) {
 }
 
 define mongodb_db (
+  $dbname,
   $user,
-  $password
+  $password,
+  $roles     = ['dbAdmin', 'readWrite', 'userAdmin'],
+  $tries     = 10,
 ) {
-  if $name == '' or $password == '' {
+  if ! value_true($name) or ! value_true($password) {
     fail( 'MongoDB requires that name and password be set. Please check your settings!' )
   }
 
-  mongodb::db { $name:
-    user     => $user,
-    password => $password
+  if ! defined(Mongodb_database[$dbname]) {
+    mongodb_database { $dbname:
+      ensure  => present,
+      tries   => $tries,
+      require => Class['mongodb::server'],
+    }
+  }
+
+  $hash = mongodb_password($user, $password)
+
+  if ! defined(Mongodb_user[$user]) {
+    mongodb_user { $user:
+      ensure        => present,
+      password_hash => $hash,
+      database      => $dbname,
+      roles         => $roles,
+      require       => Mongodb_database[$dbname],
+    }
   }
 }
 

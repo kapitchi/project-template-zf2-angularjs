@@ -7,7 +7,7 @@ VAGRANT_CORE_FOLDER=$(echo "$1")
 OS=$(/bin/bash "${VAGRANT_CORE_FOLDER}/shell/os-detect.sh" ID)
 CODENAME=$(/bin/bash "${VAGRANT_CORE_FOLDER}/shell/os-detect.sh" CODENAME)
 
-cat "${VAGRANT_CORE_FOLDER}/shell/self-promotion.txt"
+cat "${VAGRANT_CORE_FOLDER}/shell/ascii-art/self-promotion.txt"
 printf "\n"
 echo ""
 
@@ -18,6 +18,19 @@ fi
 
 touch '/.puphpet-stuff/vagrant-core-folder.txt'
 echo "${VAGRANT_CORE_FOLDER}" > '/.puphpet-stuff/vagrant-core-folder.txt'
+
+# Adding this here with a datestamped filename for future issues like #1189
+# apt repos become stale, Ubuntu/Debian move stuff around and break existing
+# boxes that no longer require apt-get update. Force it one more time. Update
+# datestamp as required for future breaks.
+if [[ ! -f '/.puphpet-stuff/initial-setup-repo-update-11052014' ]]; then
+    if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
+        echo 'Running datestamped initial-setup apt-get update'
+        apt-get update >/dev/null
+        touch '/.puphpet-stuff/initial-setup-repo-update-11052014'
+        echo 'Finished running datestamped initial-setup apt-get update'
+    fi
+fi
 
 if [[ -f '/.puphpet-stuff/initial-setup-base-packages' ]]; then
     exit 0
@@ -38,7 +51,7 @@ if [ "${OS}" == 'debian' ] || [ "${OS}" == 'ubuntu' ]; then
         echo 'Finished installing basic curl packages'
     fi
 
-    echo 'Installing build-essential package'
+    echo 'Installing build-essential packages'
     apt-get -y install build-essential >/dev/null
     echo 'Finished installing build-essential packages'
 elif [[ "${OS}" == 'centos' ]]; then

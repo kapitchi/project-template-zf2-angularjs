@@ -1,22 +1,19 @@
-## Begin HHVM manifest
+if $hhvm_values == undef { $hhvm_values = hiera_hash('hhvm', false) }
+if $apache_values == undef { $apache_values = hiera_hash('apache', false) }
+if $nginx_values == undef { $nginx_values = hiera_hash('nginx', false) }
 
-if $hhvm_values == undef {
-  $hhvm_values = hiera('hhvm', false)
-} if $apache_values == undef {
-  $apache_values = hiera('apache', false)
-} if $nginx_values == undef {
-  $nginx_values = hiera('nginx', false)
-}
+include puphpet::params
+include puphpet::supervisord
 
 if hash_key_equals($hhvm_values, 'install', 1) {
   if hash_key_equals($apache_values, 'install', 1) {
-    $hhvm_webserver = 'httpd'
+    $hhvm_webserver         = 'httpd'
     $hhvm_webserver_restart = true
   } elsif hash_key_equals($nginx_values, 'install', 1) {
-    $hhvm_webserver = 'nginx'
+    $hhvm_webserver         = 'nginx'
     $hhvm_webserver_restart = true
   } else {
-    $hhvm_webserver = undef
+    $hhvm_webserver         = undef
     $hhvm_webserver_restart = true
   }
 
@@ -35,18 +32,6 @@ if hash_key_equals($hhvm_values, 'install', 1) {
     }
   }
 
-  if ! defined(Class['supervisord']) {
-    class{ 'puphpet::python::pip': }
-
-    class { 'supervisord':
-      install_pip => false,
-      require     => [
-        Class['my_fw::post'],
-        Class['Puphpet::Python::Pip'],
-      ],
-    }
-  }
-
   $supervisord_hhvm_cmd = "hhvm --mode server -vServer.Type=fastcgi -vServer.Port=${hhvm_values['settings']['port']}"
 
   supervisord::program { 'hhvm':
@@ -55,9 +40,7 @@ if hash_key_equals($hhvm_values, 'install', 1) {
     user        => 'hhvm',
     autostart   => true,
     autorestart => 'true',
-    environment => {
-      'PATH' => '/bin:/sbin:/usr/bin:/usr/sbin'
-    },
+    environment => { 'PATH' => '/bin:/sbin:/usr/bin:/usr/sbin' },
     require     => [
       User['hhvm'],
       Package['hhvm']
@@ -70,51 +53,37 @@ if hash_key_equals($hhvm_values, 'install', 1) {
     require => Package['hhvm']
   }
 
-  if hash_key_equals($hhvm_values, 'composer', 1) {
-    $hhvm_composer_home = $hhvm_values['composer_home'] ? {
-      false   => false,
-      undef   => false,
-      ''      => false,
-      default => $hhvm_values['composer_home'],
-    }
+  if count($hhvm_values['ini']) > 0 {
+    $hhvm_inis = merge({
+      'date.timezone' => $hhvm_values['timezone'],
+    }, $hhvm_values['ini'])
 
-    if $hhvm_composer_home {
-      file { $hhvm_composer_home:
-        ensure  => directory,
-        owner   => 'www-data',
-        group   => 'www-data',
-        mode    => 0775,
-        require => [Group['www-data'], Group['www-user']]
-      }
+    $hhvm_ini = '/etc/hhvm/php.ini'
 
-      file_line { "COMPOSER_HOME=${hhvm_composer_home}":
-        path => '/etc/environment',
-        line => "COMPOSER_HOME=${hhvm_composer_home}",
+    each( $hhvm_inis ) |$key, $value| {
+      exec { "hhvm-php.ini@${key}/${value}":
+        command => "perl -p -i -e 's#${key} = .*#${key} = ${value}#gi' ${hhvm_ini}",
+        onlyif  => "test -f ${hhvm_ini}",
+        unless  => "grep -x '${key} = ${value}' ${hhvm_ini}",
+        path    => [ '/bin/', '/sbin/', '/usr/bin/', '/usr/sbin/' ],
+        require => Package['hhvm'],
+        notify  => Supervisord::Supervisorctl['restart_hhvm'],
       }
     }
 
-    class { 'composer':
-      target_dir      => '/usr/local/bin',
-      composer_file   => 'composer',
-      download_method => 'curl',
-      logoutput       => false,
-      tmp_path        => '/tmp',
-      php_package     => 'hhvm',
-      curl_package    => 'curl',
-      suhosin_enabled => false,
+    supervisord::supervisorctl { 'restart_hhvm':
+      command     => 'restart',
+      process     => 'hhvm',
+      refreshonly => true,
     }
   }
 
-  if count($hhvm_values['modules']['pear']) > 0 {
-    hhvm_pear_mod { $hhvm_values['modules']['pear']:; }
-  }
-}
-
-define hhvm_pear_mod {
-  if ! defined(Puphpet::Php::Pear[$name]) {
-    puphpet::php::pear { $name:
-      service_name        => $hhvm_webserver,
-      service_autorestart => $hhvm_webserver_restart,
+  if hash_key_equals($hhvm_values, 'composer', 1)
+    and ! defined(Class['puphpet::php::composer'])
+  {
+    class { 'puphpet::php::composer':
+      php_package   => 'hhvm',
+      composer_home => $hhvm_values['composer_home'],
     }
   }
 }
