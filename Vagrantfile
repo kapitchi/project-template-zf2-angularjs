@@ -96,7 +96,7 @@ Vagrant.configure('2') do |config|
           group: 'www-data', owner: 'www-data', mount_options: ['share']
       else
         config.vm.synced_folder "#{folder['source']}", "#{folder['target']}", id: "#{i}",
-          group: 'www-data', owner: 'www-data', mount_options: ['dmode=775', 'fmode=764']
+          group: 'www-data', owner: 'vagrant', mount_options: ['dmode=775', 'fmode=764']
       end
     end
   end

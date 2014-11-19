@@ -96,7 +96,7 @@ apache:
                 - Indexes
                 - FollowSymLinks
                 - MultiViews
-            engine: ''
+            engine: 'php'
             custom_fragment: ''
             ssl_cert: ''
             ssl_key: ''
